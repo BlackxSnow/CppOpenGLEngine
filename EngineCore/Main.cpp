@@ -14,6 +14,7 @@
 #include "Texture.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 
 
 // Vertices coordinates
@@ -76,13 +77,16 @@ int InitWindow(OUT GLFWwindow** window)
 	return 0;
 }
 
-std::shared_ptr<SceneObject> MakeLightObject(OUT std::shared_ptr<PointLight>* lightComponent)
+std::shared_ptr<SceneObject> MakeLightObject(OUT std::shared_ptr<SpotLight>* lightComponent)
 {
 	//std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject());
 	//*lightComponent = lightObj->AddComponent<DirectionalLight>(glm::vec4(1.0f, 0.2f, 0.2f, 1.0f), glm::vec3(-1.0f, 0, -1.0f));
 
+	//std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::quat()));
+	//*lightComponent = lightObj->AddComponent<PointLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
 	std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::quat()));
-	*lightComponent = lightObj->AddComponent<PointLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	*lightComponent = lightObj->AddComponent<SpotLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0, -1, 0, 0), 15, 15);
 
 	return lightObj;
 }
@@ -164,7 +168,7 @@ int main()
 
 	camObject->GetTransform()->Translate(glm::vec3(0.0, 0.5f, 1.0f));
 
-	std::shared_ptr<PointLight> lightComponent;
+	std::shared_ptr<SpotLight> lightComponent;
 	auto lightObject = MakeLightObject(OUT &lightComponent);
 
 	std::vector<LightData> lights;
@@ -173,29 +177,6 @@ int main()
 	glGenBuffers(1, &lightSSBO);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, lightSSBO);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(LightData) * 10, NULL, GL_DYNAMIC_DRAW);
-	
-
-
-	// Some debug data for if the buffer breaks again. This shouldn't be seen by other people
-
-	void* ptr = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
-
-	std::cout << "lightCount value = " << *(int*)ptr << "\n";
-	std::cout << "First Light: \n";
-	ptr = (int*)ptr + 4;
-	std::cout << "\tType: " << *(unsigned int*)ptr << "\n";
-	ptr = (int*)ptr + 1;
-	std::cout << "\tPosition: " << vec4ToString((glm::vec4*)ptr) << "\n";
-	ptr = (float*)ptr + 4;
-	std::cout << "\tDirection: " << vec4ToString((glm::vec4*)ptr) << "\n";
-	ptr = (float*)ptr + 4;
-	std::cout << "\tColour: " << vec4ToString((glm::vec4*)ptr) << "\n";
-	ptr = (float*)ptr + 4;
-	std::cout << "\tSize: " << *(float*)ptr << "\n";
-
-	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-
-	
 
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, glm::vec3(0, 0, -1));

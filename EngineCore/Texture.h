@@ -2,6 +2,7 @@
 #include<stb/stb_image.h>
 #include <GL/glew.h>
 #include <GL/GL.h>
+#include "Shader.h"
 
 class Texture
 {
@@ -20,6 +21,8 @@ public:
 
 	void Bind();
 	void Unbind();
+
+	void SendToShader(Shader& shader, const char* uniformName);
 
 	Texture(const char* textureName, GLenum textureType, GLuint slot, GLenum format, GLenum pixelType);
 	~Texture();

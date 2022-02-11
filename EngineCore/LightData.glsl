@@ -7,7 +7,8 @@ struct LightData
 {
     uint Type;
     float Size;
-    int[2] _padding;
+    float FeatherAmount;
+    int _padding;
     vec4 Position;
     vec4 Direction;
     vec4 Colour;

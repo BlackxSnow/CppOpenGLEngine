@@ -22,7 +22,8 @@ uniform vec3 camPosition;
 const float ambientLight = 0.2f;
 const float specularAmount = 0.5f;
 
-// uniform vec3 lightPos;
+const float falloffA = 0.7;
+const float falloffB = 0;
 
 void main()
 {
@@ -33,24 +34,36 @@ void main()
 
    FragColor += texColour * ambientLight;
 
+
    for (int i = 0; i < LightCount; i++)
    {
-      vec3 inverseLightDirection;
+      vec3 inverseLightRayDirection;
+      float intensity;
       switch (Lights[i].Type)
       {
          case LIGHT_POINT:
-            inverseLightDirection = normalize(Lights[i].Position.xyz - position);
-            float dist = distance(position, vec3(Lights[i].Position));
-            // FragColor += texColour * Lights[i].Colour * max(dot(properNormal, direction), 0.0f) * (1/ (1 + dist));
-            FragColor += texColour * Lights[i].Colour * max(dot(properNormal, inverseLightDirection), 0.0f);
+            vec3 lightVector = Lights[i].Position.xyz - position;
+            inverseLightRayDirection = normalize(lightVector);
+            float dist = length(lightVector);
+            intensity = Lights[i].Colour.w / (falloffA * dist * dist + falloffB * dist + 1.0f);
+            FragColor += texColour * Lights[i].Colour * max(dot(properNormal, inverseLightRayDirection), 0.0f) * intensity;
             break;
          case LIGHT_DIRECTIONAL:
-            FragColor += texColour * Lights[i].Colour * max(dot(properNormal, Lights[i].Direction.xyz), 0.0f);
+            inverseLightRayDirection = -Lights[i].Direction.xyz;
+            intensity = Lights[i].Colour.w;
+            FragColor += texColour * Lights[i].Colour * max(dot(properNormal, inverseLightRayDirection), 0.0f) * intensity;
+            break;
+         case LIGHT_SPOT:
+            inverseLightRayDirection = normalize(Lights[i].Position.xyz - position);
+            // dot( lightDirection, lightRayDirection ) 
+            float angle = dot(Lights[i].Direction.xyz, -inverseLightRayDirection);
+            intensity = clamp((angle - Lights[i].FeatherAmount) / (Lights[i].Size - Lights[i].FeatherAmount), 0.0f, 1.0f);
+            FragColor += texColour * Lights[i].Colour * intensity;
             break;
       }
       
-      vec3 reflectionDirection = reflect(-inverseLightDirection, properNormal);
-      float specularValue = pow(max(dot(reverseViewDirection, reflectionDirection), 0.0f), 8) * specularAmount;
+      vec3 reflectionDirection = reflect(-inverseLightRayDirection, properNormal);
+      float specularValue = pow(max(dot(reverseViewDirection, reflectionDirection), 0.0f), 8) * specularAmount * intensity;
       FragColor += specularValue;
    }
 }
