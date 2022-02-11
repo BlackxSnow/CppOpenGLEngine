@@ -149,6 +149,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="ElementBuffer.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="LightData.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Mesh.h" />

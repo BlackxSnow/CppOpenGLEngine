@@ -1,6 +1,16 @@
 #pragma once
 
 #include<GL/glew.h>
+#include<glm/glm.hpp>
+#include<vector>
+
+struct Vertex
+{
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec3 Colour;
+	glm::vec2 UV;
+};
 
 /// <summary>
 /// OpenGL VertexBuffer object
@@ -14,7 +24,7 @@ public:
 	/// </summary>
 	/// <param name="vertices"></param>
 	/// <param name="size"></param>
-	VertexBuffer(GLfloat* vertices, GLsizeiptr size);
+	VertexBuffer(std::vector<Vertex> vertices);
 
 	void Bind();
 	void Unbind();

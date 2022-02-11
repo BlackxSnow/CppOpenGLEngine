@@ -1,6 +1,7 @@
 #pragma once
 
 #include<GL/glew.h>
+#include<vector>
 
 /// <summary>
 /// OpenGL index buffer object
@@ -14,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="indices"></param>
 	/// <param name="size"></param>
-	ElementBuffer(GLuint* indices, GLsizeiptr size);
+	ElementBuffer(std::vector<GLuint> indices);
 
 	void Bind();
 	void Unbind();

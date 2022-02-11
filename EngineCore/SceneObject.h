@@ -55,8 +55,13 @@ std::shared_ptr<ComponentType> SceneObject::AddComponent(Args&&... params)
 	// Create the component and a unique_ptr to it using params.
 	// std::forward ensures params maintains its l/rvalue status.
 	std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(this, std::forward<Args>(params)...);
+
+	// NOTE: If this starts spewing errors that make no fucking sense, it's almost certainly because the component inheritor is missing the "public" keyword before it's inheritance.
 	Components->emplace_back(component);
 	return component;
+
+	//Components->emplace_back(std::make_shared<ComponentType>(this, std::forward<Args>(params)...));
+	//return dynamic_cast<ComponentType>(Components->back());
 }
 
 template<class ComponentType>

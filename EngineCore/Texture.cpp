@@ -3,23 +3,25 @@
 void Texture::Bind()
 {
 	glActiveTexture(GL_TEXTURE0 + Slot);
-	glBindTexture(Type, ID);
+	glBindTexture(GLTexType, ID);
 }
 
 void Texture::Unbind()
 {
+	glBindTexture(GLTexType, 0);
 }
 
-void Texture::SendToShader(Shader& shader, const char* uniformName)
+void Texture::SendToShader(Shader& shader, const char* uniformName, GLuint unit)
 {
 	GLuint location = glGetUniformLocation(shader.ID, uniformName);
 	shader.Activate();
-	glUniform1i(location, Slot);
+	glUniform1i(location, unit);
 }
 
-Texture::Texture(const char* textureName, GLenum textureType, GLuint slot, GLenum format, GLenum pixelType)
+Texture::Texture(const char* textureName, const char* textureType, GLuint slot, GLenum format, GLenum pixelType, GLenum glTexType)
 {
 	Type = textureType;
+	GLTexType = glTexType;
 	Slot = slot;
 	Format = format;
 	PixelType = pixelType;
@@ -29,19 +31,19 @@ Texture::Texture(const char* textureName, GLenum textureType, GLuint slot, GLenu
 	
 	glGenTextures(1, &ID);
 	glActiveTexture(GL_TEXTURE0 + Slot);
-	glBindTexture(textureType, ID);
+	glBindTexture(glTexType, ID);
 
-	glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(glTexType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(glTexType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexParameteri(textureType, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(textureType, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(glTexType, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(glTexType, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glTexImage2D(textureType, 0, GL_RGBA, Width, Height, 0, format, pixelType, Data);
-	glGenerateMipmap(textureType);
+	glTexImage2D(glTexType, 0, GL_RGBA, Width, Height, 0, format, pixelType, Data);
+	glGenerateMipmap(glTexType);
 
 	stbi_image_free(Data);
-	glBindTexture(textureType, 0);
+	glBindTexture(glTexType, 0);
 }
 
 Texture::~Texture()

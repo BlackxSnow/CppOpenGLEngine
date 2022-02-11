@@ -5,9 +5,9 @@
 out vec4 FragColor;
 
 in vec3 position;
+in vec3 normal;
 in vec3 colour;
 in vec2 texCoord;
-in vec3 normal;
 
 layout (std430, binding = 0) buffer LightBuffer
 {
@@ -16,7 +16,9 @@ layout (std430, binding = 0) buffer LightBuffer
    LightData[] Lights;
 };
 
-uniform sampler2D tex0;
+uniform sampler2D diffuse0;
+uniform sampler2D specular0;
+
 uniform vec3 camPosition;
 
 const float ambientLight = 0.2f;
@@ -28,7 +30,7 @@ const float falloffB = 0;
 void main()
 {
    vec3 properNormal = normalize(normal);
-   vec4 texColour = texture(tex0, texCoord);
+   vec4 texColour = texture(diffuse0, texCoord);
 
    vec3 reverseViewDirection = normalize(camPosition - position);
 
@@ -64,6 +66,6 @@ void main()
       
       vec3 reflectionDirection = reflect(-inverseLightRayDirection, properNormal);
       float specularValue = pow(max(dot(reverseViewDirection, reflectionDirection), 0.0f), 8) * specularAmount * intensity;
-      FragColor += specularValue;
+      // FragColor += specularValue;
    }
 }

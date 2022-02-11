@@ -1,14 +1,15 @@
 #pragma once
 #include<stb/stb_image.h>
 #include <GL/glew.h>
-#include <GL/GL.h>
+#include <GLFW/glfw3.h>
 #include "Shader.h"
 
 class Texture
 {
 public:
 	GLuint ID;
-	GLenum Type;
+	const char* Type;
+	GLenum GLTexType;
 	GLuint Slot;
 
 	GLenum Format;
@@ -22,8 +23,8 @@ public:
 	void Bind();
 	void Unbind();
 
-	void SendToShader(Shader& shader, const char* uniformName);
+	void SendToShader(Shader& shader, const char* uniformName, GLuint unit);
 
-	Texture(const char* textureName, GLenum textureType, GLuint slot, GLenum format, GLenum pixelType);
+	Texture(const char* textureName, const char* textureType, GLuint slot, GLenum format, GLenum pixelType, GLenum glTexType = GL_TEXTURE_2D);
 	~Texture();
 };
