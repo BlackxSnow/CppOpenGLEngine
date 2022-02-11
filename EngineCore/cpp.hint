@@ -1,0 +1,8 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define COMPONENT_DEFINITION(parentclass, childclass) const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); bool childclass::IsClassType( const std::size_t classType ) const { if ( classType == childclass::Type ) return true; return parentclass::IsClassType( classType ); }
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define COMPONENT_DECLARATION(classname) public: static const std::size_t Type; virtual bool IsClassType( const std::size_t classType ) const override;
