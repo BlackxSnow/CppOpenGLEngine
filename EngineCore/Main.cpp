@@ -19,10 +19,10 @@
 // Vertices coordinates
 std::vector<Vertex> vertices
 { //               COORDINATES           /            COLORS          /           TexCoord         /       NORMALS         //
-	Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
-	Vertex{glm::vec3(1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}
+	Vertex(glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f))
 };
 
 // Indices for vertices order
@@ -56,16 +56,16 @@ int InitWindow(OUT GLFWwindow** window)
 	return 0;
 }
 
-std::shared_ptr<SceneObject> MakeLightObject(OUT std::shared_ptr<PointLight>* lightComponent)
+std::shared_ptr<SceneObject> MakeLightObject(OUT std::shared_ptr<SpotLight>* lightComponent)
 {
 	//std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject());
 	//*lightComponent = lightObj->AddComponent<DirectionalLight>(glm::vec4(1.0f, 0.2f, 0.2f, 1.0f), glm::vec3(-1.0f, 0, -1.0f));
 
-	std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::quat()));
-	*lightComponent = lightObj->AddComponent<PointLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-
 	//std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::quat()));
-	//*lightComponent = lightObj->AddComponent<SpotLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0, -1, 0, 0), 15, 15);
+	//*lightComponent = lightObj->AddComponent<PointLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+	std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::quat()));
+	*lightComponent = lightObj->AddComponent<SpotLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0, -1, 0, 0), 15, 15);
 
 	return lightObj;
 }
@@ -100,7 +100,7 @@ GLuint GenerateLightBuffer()
 }
 
 std::vector<LightData> lights;
-std::shared_ptr<PointLight> lightComponent;
+std::shared_ptr<SpotLight> lightComponent;
 
 void SetLightBufferData(Shader& shader, Camera& camera)
 {
@@ -111,7 +111,17 @@ void SetLightBufferData(Shader& shader, Camera& camera)
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 16, sizeof(LightData) * lights.size(), &lights[0]);
 }
 
+void SetLightBufferData()
+{
+	lights.clear();
+	lights.push_back(lightComponent->BuildLightData());
+	int lightCount = lights.size();
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(int), &lightCount);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 16, sizeof(LightData) * lights.size(), &lights[0]);
+}
 
+#include "ConsoleLogging.h"
+#include "Renderer.h"
 int main()
 {
 	GLFWwindow* window;
@@ -134,7 +144,7 @@ int main()
 		std::shared_ptr<Texture>(new Texture("brick.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE, GL_TEXTURE_2D))
 	};
 
-	Shader shader("default.vert", "default.frag");
+	std::shared_ptr<Shader> shader = std::shared_ptr<Shader>(new Shader("default.vert", "default.frag"));
 
 	SceneObject* camObject = new SceneObject();
 	ActiveCamera = camObject->AddComponent<Camera>(90, 0.1f, 100.0f);
@@ -144,8 +154,14 @@ int main()
 	auto lightObject = MakeLightObject(OUT &lightComponent);
 
 	std::shared_ptr<SceneObject> floor(new SceneObject(glm::vec3(0, -1, -1), glm::quat()));
-	std::shared_ptr<Mesh> floorMesh = floor->AddComponent<Mesh>(vertices, indices, textures);
-	floorMesh->OnRender.Register(SetLightBufferData);
+	std::vector<std::shared_ptr<Mesh>> floorMeshes;
+	floorMeshes.emplace_back(std::shared_ptr<Mesh>(new Mesh(vertices, indices, textures)));
+	std::shared_ptr<Renderer> floorRenderer = floor->AddComponent<Renderer>(shader, floorMeshes);
+	//floorMesh->OnRender.Register(SetLightBufferData);
+
+	std::shared_ptr<SceneObject> cube(new SceneObject(glm::vec3(0, -1, -2.25), glm::quat()));
+	std::shared_ptr<Renderer> cubeRenderer = cube->AddComponent<Renderer>(shader);
+	cubeRenderer->ImportMeshesFromOBJ("Cube.obj");
 
 	GenerateLightBuffer();
 
@@ -200,12 +216,14 @@ int main()
 			lightObject->GetTransform()->Translate(glm::vec3(0, 0, 1 * deltaTime));
 		}
 
-		floorMesh->Draw(shader, *ActiveCamera);
+		SetLightBufferData();
+		floorRenderer->Draw(*ActiveCamera);
+		cubeRenderer->Draw(*ActiveCamera);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	shader.Delete();
+	shader->Delete();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

@@ -2,18 +2,13 @@
 #include "SceneObject.h"
 #include <glm/gtc/type_ptr.hpp>
 
-COMPONENT_DEFINITION(Component, Mesh)
 
-Mesh::Mesh(SceneObject* attachedObject, std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<std::shared_ptr<Texture>>& textures) : Component(attachedObject)
+void Mesh::UpdateMesh()
 {
-	Vertices = vertices;
-	Indices = indices;
-	Textures = textures;
-
 	VAO.Bind();
 
-	VertexBuffer vertBuffer(vertices);
-	ElementBuffer elementBuffer(indices);
+	VertexBuffer vertBuffer(Vertices);
+	ElementBuffer elementBuffer(Indices);
 
 	VAO.LinkAttrib(vertBuffer, 0, 3, GL_FLOAT, sizeof(Vertex), 0);
 	VAO.LinkAttrib(vertBuffer, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(sizeof(GLfloat) * 3));
@@ -25,7 +20,18 @@ Mesh::Mesh(SceneObject* attachedObject, std::vector<Vertex>& vertices, std::vect
 	elementBuffer.Unbind();
 }
 
-void Mesh::Draw(Shader& shader, Camera& camera)
+Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<std::shared_ptr<Texture>>& textures)
+{
+	Vertices = vertices;
+	Indices = indices;
+	Textures = textures;
+
+	UpdateMesh();
+}
+
+Mesh::Mesh() {}
+
+void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera)
 {
 	shader.Activate();
 	VAO.Bind();
@@ -52,26 +58,17 @@ void Mesh::Draw(Shader& shader, Camera& camera)
 		Textures[i]->Bind();
 	}
 
-	glm::vec3 camPos = camera.GetSceneObject()->GetTransform()->GetWorldPosition();
-	glUniform3f(glGetUniformLocation(shader.ID, "camPosition"), camPos.x, camPos.y, camPos.z);
-
-	//model = glm::rotate(model, glm::radians(90.0f * deltaTime), glm::vec3(0, 1, 0));
 	glm::mat4 view;
 	glm::mat4 proj;
-	glm::mat4 model = BuildModelMatrix();
 	camera.BuildMatrices(&view, &proj);
-	glm::mat4 renderMatrix = proj * view * model;
+	glm::mat4 renderMatrix = proj * view * modelMatrix;
 
-	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "renderMatrix"), 1, GL_FALSE, glm::value_ptr(renderMatrix));
 
-	OnRender.Invoke(shader, camera);
+	unsigned int useTextures = Textures.size() > 0 ? 1 : 0;
+
+	glUniform1ui(glGetUniformLocation(shader.ID, "useTextures"), useTextures);
 
 	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-}
-
-glm::mat4& Mesh::BuildModelMatrix()
-{
-	glm::mat4 result = glm::translate(glm::mat4(1), GetSceneObject()->GetTransform()->GetWorldPosition()) * glm::toMat4(GetSceneObject()->GetTransform()->GetWorldRotation());
-	return result;
 }

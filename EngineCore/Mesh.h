@@ -13,22 +13,23 @@
 #include "Camera.h"
 #include "Event.h"
 
-class Mesh : public Component
+class Mesh
 {
-	COMPONENT_DECLARATION(Mesh);
 
 public:
 	std::vector<Vertex> Vertices;
 	std::vector<GLuint> Indices;
 	std::vector<std::shared_ptr<Texture>> Textures;
 
-	Event<Shader&, Camera&> OnRender;
+	unsigned int MaterialIndex;
 
 	VertexArray VAO;
 
-	Mesh(SceneObject* attachedObject, std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<std::shared_ptr<Texture>>& textures);
+	void UpdateMesh();
 
-	void Draw(Shader& shader, Camera& camera);
-	glm::mat4& BuildModelMatrix();
+	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<std::shared_ptr<Texture>>& textures);
+	Mesh();
+
+	void Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera);
 
 };

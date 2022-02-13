@@ -19,3 +19,11 @@ void VertexBuffer::Delete()
 {
 	glDeleteBuffers(1, &ID);
 }
+
+Vertex::Vertex(glm::vec3 position, glm::vec3 normal, glm::vec3 colour, glm::vec2 uv)
+{
+	Position = position;
+	Normal = normal;
+	Colour = colour;
+	UV = uv;
+}

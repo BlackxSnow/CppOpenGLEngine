@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include <glm/gtx/quaternion.hpp>
 
 COMPONENT_DEFINITION(Component, Transform)
 
@@ -31,6 +32,14 @@ glm::vec3 Transform::GetScale()
 void Transform::SetScale(glm::vec3 scale)
 {
     Scale = scale;
+}
+
+glm::mat4& Transform::BuildModelMatrix()
+{
+    glm::mat4 result = glm::mat4(1);
+
+    result = glm::translate(result, GetWorldPosition()) * glm::toMat4(GetWorldRotation());
+    return result;
 }
 
 glm::vec3 Transform::GetWorldPosition()
