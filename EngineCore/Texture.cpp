@@ -1,8 +1,9 @@
 #include "Texture.h"
+#include "GLErrors.h"
 
-void Texture::Bind()
+void Texture::Bind(GLuint offset)
 {
-	glActiveTexture(GL_TEXTURE0 + Slot);
+	glActiveTexture(GL_TEXTURE0 + offset);
 	glBindTexture(GLTexType, ID);
 }
 
@@ -11,18 +12,19 @@ void Texture::Unbind()
 	glBindTexture(GLTexType, 0);
 }
 
-void Texture::SendToShader(Shader& shader, const char* uniformName, GLuint unit)
+void Texture::SendToShader(Shader& shader, const char* uniformName, GLuint offset)
 {
 	GLuint location = glGetUniformLocation(shader.ID, uniformName);
 	shader.Activate();
-	glUniform1i(location, unit);
+	Bind(offset);
+	glUniform1i(location, offset);
+	gler::ProcessGLErrors(CLOGINFO);
 }
 
-Texture::Texture(const char* textureName, const char* textureType, GLuint slot, GLenum format, GLenum pixelType, GLenum glTexType)
+Texture::Texture(const char* textureName, const char* textureType, GLenum format, GLenum pixelType, GLenum glTexType)
 {
 	Type = textureType;
 	GLTexType = glTexType;
-	Slot = slot;
 	Format = format;
 	PixelType = pixelType;
 
@@ -30,7 +32,6 @@ Texture::Texture(const char* textureName, const char* textureType, GLuint slot, 
 	Data = stbi_load(textureName, &Width, &Height, &ChannelCount, 0);
 	
 	glGenTextures(1, &ID);
-	glActiveTexture(GL_TEXTURE0 + Slot);
 	glBindTexture(glTexType, ID);
 
 	glTexParameteri(glTexType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

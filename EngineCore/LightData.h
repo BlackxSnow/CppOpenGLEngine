@@ -15,7 +15,7 @@ struct LightData
 	unsigned int Type;
 	float Size;
 	float FeatherAmount;
-	int padding;
+	int ShadowMapIndex;
 	glm::vec4 Position;
 	glm::vec4 Direction;
 	glm::vec4 Colour;

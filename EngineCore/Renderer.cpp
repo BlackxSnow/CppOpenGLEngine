@@ -2,6 +2,9 @@
 #include "ConsoleLogging.h"
 #include "SceneObject.h"
 #include "Conversion.h"
+#include "GLErrors.h"
+#include <glm/gtc/type_ptr.hpp>
+#include "Main.h"
 
 COMPONENT_DEFINITION(Component, Renderer)
 
@@ -11,16 +14,75 @@ void Renderer::Draw(Camera& camera)
 	{
 		clog::Error(CLOGINFO, "GLShader has not been set for this renderer!", true);
 	}
+	GLShader->Activate();
 	glm::mat4 modelMatrix = GetSceneObject()->GetTransform()->BuildModelMatrix();
 
 	glm::vec3 camPos = camera.GetSceneObject()->GetTransform()->GetWorldPosition();
 	glUniform3f(glGetUniformLocation(GLShader->ID, "camPosition"), camPos.x, camPos.y, camPos.z);
+	gler::ProcessGLErrors(CLOGINFO);
+	if (ShadowCasterMatrices->size() > 0)
+	{
+		GLuint loc = glGetUniformLocation(GLShader->ID, "lightMatrices");
+		glUniformMatrix4fv(loc, ShadowCasterMatrices->size(), GL_FALSE, glm::value_ptr(ShadowCasterMatrices->data()[0]));
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, ShadowMapArray);
+		glUniform1i(glGetUniformLocation(GLShader->ID, "LightDepthMaps"), 0);
+	}
+	gler::ProcessGLErrors(CLOGINFO);
 
 	OnRender.Invoke(*GLShader, camera);
 
 	for (std::shared_ptr<Mesh> mesh : Meshes)
 	{
-		mesh->Draw(modelMatrix, *GLShader, camera);
+		mesh->Draw(modelMatrix, *GLShader, camera, 1);
+		gler::ProcessGLErrors(CLOGINFO);
+	}
+}
+
+void Renderer::Draw(Shader& shader, const glm::vec3 camPos, const glm::mat4 camMatrix)
+{
+	if (GLShader == nullptr)
+	{
+		clog::Error(CLOGINFO, "GLShader has not been set for this renderer!", true);
+	}
+	glm::mat4 modelMatrix = GetSceneObject()->GetTransform()->BuildModelMatrix();
+	glUniform3f(glGetUniformLocation(GLShader->ID, "camPosition"), camPos.x, camPos.y, camPos.z);
+
+	for (std::shared_ptr<Mesh> mesh : Meshes)
+	{
+		mesh->Draw(modelMatrix, shader, camMatrix, 0);
+	}
+}
+
+void Renderer::Draw(const glm::vec3 camPos, const glm::mat4 camMatrix)
+{
+	if (GLShader == nullptr)
+	{
+		clog::Error(CLOGINFO, "GLShader has not been set for this renderer!", true);
+	}
+	glm::mat4 modelMatrix = GetSceneObject()->GetTransform()->BuildModelMatrix();
+	glUniform3f(glGetUniformLocation(GLShader->ID, "camPosition"), camPos.x, camPos.y, camPos.z);
+
+	for (std::shared_ptr<Mesh> mesh : Meshes)
+	{
+		mesh->Draw(modelMatrix, *GLShader, camMatrix, 0);
+	}
+}
+
+void Renderer::Draw(Shader& shader, bool minimal)
+{
+	glm::mat4 modelMatrix = GetSceneObject()->GetTransform()->BuildModelMatrix();
+
+	shader.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+	for (std::shared_ptr<Mesh> mesh : Meshes)
+	{
+		if (minimal)
+		{
+			mesh->DrawMinimal(modelMatrix, shader);
+		}
 	}
 }
 

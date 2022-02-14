@@ -10,7 +10,6 @@ public:
 	GLuint ID;
 	const char* Type;
 	GLenum GLTexType;
-	GLuint Slot;
 
 	GLenum Format;
 	GLenum PixelType;
@@ -20,11 +19,11 @@ public:
 	int ChannelCount;
 	unsigned char* Data;
 
-	void Bind();
+	void Bind(GLuint offset);
 	void Unbind();
 
-	void SendToShader(Shader& shader, const char* uniformName, GLuint unit);
+	void SendToShader(Shader& shader, const char* uniformName, GLuint offset);
 
-	Texture(const char* textureName, const char* textureType, GLuint slot, GLenum format, GLenum pixelType, GLenum glTexType = GL_TEXTURE_2D);
+	Texture(const char* textureName, const char* textureType, GLenum format, GLenum pixelType, GLenum glTexType = GL_TEXTURE_2D);
 	~Texture();
 };

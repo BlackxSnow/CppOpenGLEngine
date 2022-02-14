@@ -6,13 +6,13 @@ class SpotLight : public Light
 	COMPONENT_DECLARATION(SpotLight)
 
 public:
-	glm::vec3 Direction;
 	float Size;
 	float FeatherAmount;
 	
-	virtual LightData BuildLightData() override;
+	virtual LightData BuildLightData(int* shadowMapIndex, std::vector<glm::mat4>& lightMatrices) override;
+	virtual void BuildLightMatrices(OUT glm::mat4* view, OUT glm::mat4* projection) override;
 
-	SpotLight(SceneObject* attachedComponent, glm::vec4 lightColour, glm::vec3 direction, float size, float featherAmount);
+	SpotLight(SceneObject* attachedComponent, glm::vec4 lightColour, float size, float featherAmount);
 
 private:
 	

@@ -1,9 +1,12 @@
 #pragma once
 #include<glm/vec3.hpp>
 #include<glm/vec4.hpp>
+#include<glm/mat4x4.hpp>
+#include<vector>
 
 #include "Component.h"
 #include "LightData.h"
+#include "Defs.h"
 
 /// <summary>
 /// Base class for all light components. Provides lighting data to scene.
@@ -14,12 +17,15 @@ class Light : public Component
 
 public:
 	glm::vec4 LightColour;
+	bool isShadowCaster = true;
 	
 	/// <summary>
 	/// Create and return light data relevant to the type of light for use in shaders.
 	/// </summary>
 	/// <returns></returns>
-	virtual LightData BuildLightData() = 0;
+	virtual LightData BuildLightData(int* shadowMapIndex, std::vector<glm::mat4>& lightMatrices) = 0;
+
+	virtual void BuildLightMatrices(OUT glm::mat4* view, OUT glm::mat4* projection) = 0;
 
 	/// <summary>
 	/// Base constructor for all light components.

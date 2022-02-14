@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "SceneObject.h"
+#include "GLErrors.h"
 #include <glm/gtc/type_ptr.hpp>
 
 
@@ -31,7 +32,54 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vec
 
 Mesh::Mesh() {}
 
-void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera)
+void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera, GLuint minTextureSlot)
+{
+	shader.Activate();
+	VAO.Bind();
+
+	unsigned int diffuseCount = 0;
+	unsigned int specularCount = 0;
+
+
+	std::string number;
+	std::string type;
+	gler::ProcessGLErrors(CLOGINFO);
+	for (unsigned int i = 0; i < Textures.size(); i++)
+	{
+		type = Textures[i]->Type;
+		if (Textures[i]->Type == "diffuse")
+		{
+			number = std::to_string(diffuseCount++);
+		}
+		else if (Textures[i]->Type == "specular")
+		{
+			number = std::to_string(specularCount++);
+		}
+		std::string key = type + number;
+		Textures[i]->SendToShader(shader, key.c_str(), i + minTextureSlot);
+		gler::ProcessGLErrors(CLOGINFO);
+	}
+
+	glm::mat4 view;
+	glm::mat4 proj;
+	camera.BuildMatrices(&view, &proj);
+	glm::mat4 renderMatrix = proj * view * modelMatrix;
+
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	gler::ProcessGLErrors(CLOGINFO);
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "renderMatrix"), 1, GL_FALSE, glm::value_ptr(renderMatrix));
+	gler::ProcessGLErrors(CLOGINFO);
+
+	unsigned int useTextures = Textures.size() > 0 ? 1 : 0;
+
+	glUniform1ui(glGetUniformLocation(shader.ID, "useTextures"), useTextures);
+
+	gler::ProcessGLErrors(CLOGINFO);
+	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+	gler::ProcessGLErrors(CLOGINFO);
+}
+
+void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, const glm::mat4& camMatrix, GLuint minTextureSlot)
 {
 	shader.Activate();
 	VAO.Bind();
@@ -54,14 +102,10 @@ void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera)
 			number = std::to_string(specularCount++);
 		}
 		std::string key = type + number;
-		Textures[i]->SendToShader(shader, key.c_str(), i);
-		Textures[i]->Bind();
+		Textures[i]->SendToShader(shader, key.c_str(), i + minTextureSlot);
 	}
 
-	glm::mat4 view;
-	glm::mat4 proj;
-	camera.BuildMatrices(&view, &proj);
-	glm::mat4 renderMatrix = proj * view * modelMatrix;
+	glm::mat4 renderMatrix = camMatrix * modelMatrix;
 
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "renderMatrix"), 1, GL_FALSE, glm::value_ptr(renderMatrix));
@@ -69,6 +113,14 @@ void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera)
 	unsigned int useTextures = Textures.size() > 0 ? 1 : 0;
 
 	glUniform1ui(glGetUniformLocation(shader.ID, "useTextures"), useTextures);
+
+	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+}
+
+void Mesh::DrawMinimal(glm::mat4& modelMatrix, Shader& shader)
+{
+	shader.Activate();
+	VAO.Bind();
 
 	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 }

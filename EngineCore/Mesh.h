@@ -30,6 +30,25 @@ public:
 	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<std::shared_ptr<Texture>>& textures);
 	Mesh();
 
-	void Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera);
-
+	/// <summary>
+	/// Draws this mesh using the provided model matrix, shader, and camera.
+	/// </summary>
+	/// <param name="modelMatrix"></param>
+	/// <param name="shader"></param>
+	/// <param name="camera"></param>
+	void Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera, GLuint minTextureSlot);
+	/// <summary>
+	/// Draws this mesh using the provided model matrix, shader, and cam matrix.
+	/// </summary>
+	/// <param name="modelMatrix"></param>
+	/// <param name="shader"></param>
+	/// <param name="camMatrix">- combined projection and view matrices.</param>
+	void Draw(glm::mat4& modelMatrix, Shader& shader, const glm::mat4& camMatrix, GLuint minTextureSlot);
+	/// <summary>
+	/// Draws this mesh minimally using the provided model matrix and shader. Does not use textures.
+	/// </summary>
+	/// <param name="modelMatrix"></param>
+	/// <param name="shader"></param>
+	/// <param name="minimal"></param>
+	void DrawMinimal(glm::mat4& modelMatrix, Shader& shader);
 };

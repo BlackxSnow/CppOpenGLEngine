@@ -10,7 +10,7 @@ COMPONENT_DEFINITION(Light, DirectionalLight)
 //    return Direction;
 //}
 
-LightData DirectionalLight::BuildLightData()
+LightData DirectionalLight::BuildLightData(int* shadowMapIndex, std::vector<glm::mat4>& lightMatrices)
 {
     LightData result = LightData();
 
@@ -20,7 +20,22 @@ LightData DirectionalLight::BuildLightData()
     result.Colour = LightColour;
     result.Size = 0;
 
+    if (isShadowCaster)
+    {
+        glm::mat4 view, proj, lightMatrix;
+        BuildLightMatrices(&view, &proj);
+        lightMatrix = proj * view;
+        lightMatrices.push_back(lightMatrix);
+        result.ShadowMapIndex = *shadowMapIndex;
+        (*shadowMapIndex)++;
+    }
+
     return result;
+}
+
+void DirectionalLight::BuildLightMatrices(OUT glm::mat4* view, OUT glm::mat4* projection)
+{
+    //TODO
 }
 
 DirectionalLight::DirectionalLight(SceneObject* attachedComponent, glm::vec4 lightColour, glm::vec3 direction) : Light(attachedComponent, lightColour)
