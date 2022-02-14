@@ -37,8 +37,8 @@ std::vector<Vertex> vertices
 // Indices for vertices order
 std::vector<GLuint> indices
 {
-	0, 1, 2,
-	0, 2, 3
+	2, 1, 0,
+	3, 2, 0
 };
 
 std::vector<std::shared_ptr<Renderer>> Renderers;
@@ -192,6 +192,7 @@ void RenderLightShadowMaps(int mapCount)
 
 		for (std::shared_ptr<Renderer> renderer : Renderers)
 		{
+			glCullFace(renderer->ShadowMapCullingMode);
 			renderer->Draw(*mapShader, true);
 		}
 
@@ -208,6 +209,7 @@ void RenderLightShadowMaps(int mapCount)
 
 	glViewport(0, 0, windowWidth, windowHeight);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glCullFace(GL_BACK);
 
 	gler::ProcessGLErrors(CLOGINFO);
 }
@@ -300,6 +302,7 @@ int main()
 	LoadIncludes();
 	glViewport(0, 0, windowWidth, windowHeight);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	glGenFramebuffers(1, &ShadowMapFrameBuffer);
 	ShadowCasterMatrices = std::shared_ptr<std::vector<glm::mat4>>(new std::vector<glm::mat4>);
@@ -328,6 +331,7 @@ int main()
 	std::vector<std::shared_ptr<Mesh>> floorMeshes;
 	floorMeshes.emplace_back(std::shared_ptr<Mesh>(new Mesh(vertices, indices, textures)));
 	std::shared_ptr<Renderer> floorRenderer = floor->AddComponent<Renderer>(shader, floorMeshes);
+	floorRenderer->ShadowMapCullingMode = GL_BACK;
 	Renderers.push_back(floorRenderer);
 
 	std::shared_ptr<SceneObject> cube(new SceneObject(glm::vec3(0, -1, -2.25), glm::quat()));

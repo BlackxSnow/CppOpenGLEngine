@@ -14,6 +14,8 @@ public:
 	// Replace with a vector of Material (class containing a pre-set shader)
 	std::shared_ptr<Shader> GLShader;
 
+	GLenum ShadowMapCullingMode = GL_FRONT;
+
 	Event<Shader&, Camera&> OnRender;
 
 	/// <summary>

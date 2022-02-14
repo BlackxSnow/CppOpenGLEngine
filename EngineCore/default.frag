@@ -40,7 +40,7 @@ const float specularAmount = 0.5f;
 const float falloffA = 1.0;
 const float falloffB = 0.05;
 
-float CalculateShadow(int shadowMapIndex)
+float CalculateShadow(int shadowMapIndex, vec3 inverseLightRayDirection)
 {
    if (shadowMapIndex == -1)
    {
@@ -54,7 +54,9 @@ float CalculateShadow(int shadowMapIndex)
    float shadowDepth = texture(LightDepthMaps, vec3(normalDeviceCoords.xy, shadowMapIndex)).r;
    float fragDepth = normalDeviceCoords.z;
 
-   float shadow = fragDepth < shadowDepth ? 1.0 : 0.0;
+   // const float bias = 0.001;
+   // float bias = max(0.0015 * (1.0 - dot(fsi.Normal, inverseLightRayDirection)), 0.001);
+   float shadow = fragDepth /*- bias*/ < shadowDepth ? 1.0 : 0.0;
    return shadow;
 }
 
@@ -74,23 +76,26 @@ void main()
    {
       vec3 inverseLightRayDirection;
       float intensity;
-      float shadow = CalculateShadow(Lights[i].ShadowMapIndex);
+      float shadow = 1;
       switch (Lights[i].Type)
       {
          case LIGHT_POINT:
             vec3 lightVector = Lights[i].Position.xyz - fsi.FragPos;
             inverseLightRayDirection = normalize(lightVector);
+            shadow = CalculateShadow(Lights[i].ShadowMapIndex, inverseLightRayDirection);
             float dist = length(lightVector);
             intensity = Lights[i].Colour.w / (falloffA * dist * dist + falloffB * dist + 1.0f) * shadow;
             FragColor += sampleColour * Lights[i].Colour * max(dot(properNormal, inverseLightRayDirection), 0.0f) * intensity;
             break;
          case LIGHT_DIRECTIONAL:
             inverseLightRayDirection = -Lights[i].Direction.xyz;
+            shadow = CalculateShadow(Lights[i].ShadowMapIndex, inverseLightRayDirection);
             intensity = Lights[i].Colour.w * shadow;
             FragColor += sampleColour * Lights[i].Colour * max(dot(properNormal, inverseLightRayDirection), 0.0f) * intensity;
             break;
          case LIGHT_SPOT:
             inverseLightRayDirection = normalize(Lights[i].Position.xyz - fsi.FragPos);
+            shadow = CalculateShadow(Lights[i].ShadowMapIndex, inverseLightRayDirection);
             // Angle is: dot( lightDirection, lightRayDirection ) 
             float angle = dot(Lights[i].Direction.xyz, -inverseLightRayDirection);
             intensity = clamp((angle - Lights[i].FeatherAmount) / (Lights[i].Size - Lights[i].FeatherAmount), 0.0f, 1.0f) * shadow;
