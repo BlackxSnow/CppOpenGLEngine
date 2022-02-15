@@ -33,6 +33,12 @@ public:
     static const std::size_t Type;
     virtual bool IsClassType(const std::size_t classType) const;
 	
+    virtual void Disable();
+    virtual void Enable();
+
+    bool IsEnabled();
+
 protected:
+    bool IsActive;
 	SceneObject* AttachedObject;
 };

@@ -10,10 +10,26 @@ SceneObject* Component::GetSceneObject()
 Component::Component(SceneObject* attached)
 {
     AttachedObject = attached;
+    Enable();
 }
 
 bool Component::IsClassType(const std::size_t classType) const
 {
     return classType == Component::Type;
     return true;
+}
+
+void Component::Disable()
+{
+    IsActive = false;
+}
+
+void Component::Enable()
+{
+    IsActive = true;
+}
+
+bool Component::IsEnabled()
+{
+    return IsActive;
 }

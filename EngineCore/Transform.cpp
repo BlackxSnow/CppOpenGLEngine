@@ -38,7 +38,7 @@ glm::mat4& Transform::BuildModelMatrix()
 {
     glm::mat4 result = glm::mat4(1);
 
-    result = glm::translate(result, GetWorldPosition()) * glm::toMat4(GetWorldRotation());
+    result = glm::scale(glm::translate(result, GetWorldPosition()) * glm::toMat4(GetWorldRotation()), Scale);
     return result;
 }
 

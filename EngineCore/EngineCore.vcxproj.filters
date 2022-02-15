@@ -102,6 +102,9 @@
     <ClInclude Include="GLErrors.h">
       <Filter>Header Files\OpenGL Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="EngineData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneObject.cpp">
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="GLErrors.cpp">
       <Filter>Source Files\OpenGL Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineData.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

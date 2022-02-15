@@ -5,6 +5,7 @@
 #include "GLErrors.h"
 #include <glm/gtc/type_ptr.hpp>
 #include "Main.h"
+#include "EngineData.h"
 
 COMPONENT_DEFINITION(Component, Renderer)
 
@@ -119,13 +120,30 @@ void Renderer::ImportMeshesFromOBJ(std::string filePath)
 	}
 }
 
+void Register(Renderer* renderer)
+{
+	Renderers.push_back(renderer);
+}
+
+void Deregister(Renderer* renderer)
+{
+	Renderers.remove(renderer);
+}
+
 Renderer::Renderer(SceneObject* attachedObject, std::shared_ptr<Shader> shader, std::vector<std::shared_ptr<Mesh>> meshes) : Component(attachedObject)
 {
 	Meshes = meshes;
 	GLShader = shader;
+	Register(this);
 }
 
 Renderer::Renderer(SceneObject* attachedObject, std::shared_ptr<Shader> shader) : Component(attachedObject)
 {
 	GLShader = shader;
+	Register(this);
+}
+
+Renderer::~Renderer()
+{
+	Deregister(this);
 }

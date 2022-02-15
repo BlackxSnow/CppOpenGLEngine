@@ -34,5 +34,5 @@ public:
 	/// <param name="lightColour">3 components for RGB value, final component represents light intensity.</param>
 	Light(SceneObject* attachedComponent, glm::vec4 lightColour);
 
-
+	~Light();
 };

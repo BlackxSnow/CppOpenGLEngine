@@ -18,12 +18,7 @@
 #include "GLErrors.h"
 
 #include "Mesh.h"
-
-
-std::shared_ptr<Camera> ActiveCamera;
-std::vector<std::shared_ptr<Light>> SceneLights;
-
-std::shared_ptr<std::vector<glm::mat4>> ShadowCasterMatrices;
+#include "EngineData.h"
 
 // Vertices coordinates
 std::vector<Vertex> vertices
@@ -41,7 +36,6 @@ std::vector<GLuint> indices
 	3, 2, 0
 };
 
-std::vector<std::shared_ptr<Renderer>> Renderers;
 std::map<std::string, std::shared_ptr<Shader>> Shaders;
 
 /// <summary>
@@ -68,22 +62,6 @@ int InitWindow(OUT GLFWwindow** window)
 	return 0;
 }
 
-std::shared_ptr<SceneObject> MakeLightObject(OUT std::shared_ptr<SpotLight>* lightComponent)
-{
-	//std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject());
-	//*lightComponent = lightObj->AddComponent<DirectionalLight>(glm::vec4(1.0f, 0.2f, 0.2f, 1.0f), glm::vec3(-1.0f, 0, -1.0f));
-
-	//std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::quat()));
-	//*lightComponent = lightObj->AddComponent<PointLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-
-	std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 1.0f, -1), glm::vec3(0, -1, 0), glm::vec3(0,0,-1)));
-	*lightComponent = lightObj->AddComponent<SpotLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 15, 15);
-
-	SceneLights.push_back((std::shared_ptr<Light>)*lightComponent);
-
-	return lightObj;
-}
-
 void LoadIncludes()
 {
 	// TODO find all .glsl files in a folder and load automatically
@@ -106,6 +84,7 @@ void LoadIncludes()
 
 GLuint GenerateLightBuffer()
 {
+	// TODO expand the SSBO when lights exceed the allocation
 	GLuint lightSSBO;
 	glGenBuffers(1, &lightSSBO);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, lightSSBO);
@@ -114,10 +93,8 @@ GLuint GenerateLightBuffer()
 }
 
 std::vector<LightData> lightData;
-std::shared_ptr<SpotLight> lightComponent;
 
 GLuint ShadowMapFrameBuffer;
-GLuint ShadowMapArray = -1;
 int LastShadowMapCount = 0;
 const int LightMapResolution = 1024;
 
@@ -168,7 +145,7 @@ void RenderLightShadowMaps(int mapCount)
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	int currentIndex = 0;
-	for (std::shared_ptr<Light> light : SceneLights)
+	for (Light* light : SceneLights)
 	{
 		if (light->isShadowCaster == false)
 		{
@@ -190,7 +167,7 @@ void RenderLightShadowMaps(int mapCount)
 
 		gler::ProcessGLErrors(CLOGINFO);
 
-		for (std::shared_ptr<Renderer> renderer : Renderers)
+		for (Renderer* renderer : Renderers)
 		{
 			glCullFace(renderer->ShadowMapCullingMode);
 			renderer->Draw(*mapShader, true);
@@ -219,7 +196,7 @@ void SetLightBufferData()
 	lightData.clear();
 	ShadowCasterMatrices->clear();
 	int currentShadowMapIndex = 0;
-	for (std::shared_ptr<Light> light : SceneLights)
+	for (Light* light : SceneLights)
 	{
 		lightData.push_back(light->BuildLightData(&currentShadowMapIndex, *ShadowCasterMatrices));
 	}
@@ -325,19 +302,22 @@ int main()
 
 	camObject->GetTransform()->Translate(glm::vec3(0.0, 0.5f, 1.0f));
 
-	auto lightObject = MakeLightObject(OUT &lightComponent);
+	std::shared_ptr<SceneObject> lightObj = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 2.0f, -1), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1)));
+	auto lightComponent = lightObj->AddComponent<SpotLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 15, 15);
+
+	std::shared_ptr<SceneObject> lightObj2 = std::shared_ptr<SceneObject>(new SceneObject(glm::vec3(0, 2.0f, -1), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1)));
+	auto lightComponent2 = lightObj2->AddComponent<SpotLight>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 15, 15);
 
 	std::shared_ptr<SceneObject> floor(new SceneObject(glm::vec3(0, -1, -1), glm::quat()));
 	std::vector<std::shared_ptr<Mesh>> floorMeshes;
+	floor->GetTransform()->SetScale(glm::vec3(10, 1, 10));
 	floorMeshes.emplace_back(std::shared_ptr<Mesh>(new Mesh(vertices, indices, textures)));
 	std::shared_ptr<Renderer> floorRenderer = floor->AddComponent<Renderer>(shader, floorMeshes);
 	floorRenderer->ShadowMapCullingMode = GL_BACK;
-	Renderers.push_back(floorRenderer);
 
-	std::shared_ptr<SceneObject> cube(new SceneObject(glm::vec3(0, -1, -2.25), glm::quat()));
+	std::shared_ptr<SceneObject> cube(new SceneObject(glm::vec3(0, 0, -2.25), glm::quat()));
 	std::shared_ptr<Renderer> cubeRenderer = cube->AddComponent<Renderer>(shader);
 	cubeRenderer->ImportMeshesFromOBJ("Cube.obj");
-	Renderers.push_back(cubeRenderer);
 
 	GenerateLightBuffer();
 
@@ -377,26 +357,35 @@ int main()
 
 		if (glfwGetKey(window, GLFW_KEY_LEFT))
 		{
-			lightObject->GetTransform()->Translate(glm::vec3(-1 * deltaTime, 0, 0));
+			lightObj->GetTransform()->Translate(glm::vec3(-1 * deltaTime, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_RIGHT))
 		{
-			lightObject->GetTransform()->Translate(glm::vec3(1 * deltaTime, 0, 0));
+			lightObj->GetTransform()->Translate(glm::vec3(1 * deltaTime, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP))
 		{
-			lightObject->GetTransform()->Translate(glm::vec3(0, 0, -1 * deltaTime));
+			lightObj->GetTransform()->Translate(glm::vec3(0, 0, -1 * deltaTime));
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
 		{
-			lightObject->GetTransform()->Translate(glm::vec3(0, 0, 1 * deltaTime));
+			lightObj->GetTransform()->Translate(glm::vec3(0, 0, 1 * deltaTime));
 		}
 
 		SetLightBufferData();
 
 		gler::ProcessGLErrors(CLOGINFO);
-		floorRenderer->Draw(*ActiveCamera);
-		cubeRenderer->Draw(*ActiveCamera);
+
+		if (ActiveCamera != nullptr)
+		{
+			for (Renderer* renderer : Renderers)
+			{
+				if (renderer->IsEnabled())
+				{
+					renderer->Draw(*ActiveCamera);
+				}
+			}
+		}
 		gler::ProcessGLErrors(CLOGINFO);
 
 		//RenderTextureToScreen(ShadowMapArray, GL_TEXTURE_2D_ARRAY);

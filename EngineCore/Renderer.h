@@ -41,4 +41,5 @@ public:
 
 	Renderer(SceneObject* attachedObject, std::shared_ptr<Shader> shader, std::vector<std::shared_ptr<Mesh>> meshes);
 	Renderer(SceneObject* attachedObject, std::shared_ptr<Shader> shader);
+	~Renderer();
 };
