@@ -1,6 +1,6 @@
 #pragma once
 
-void Init();
+void InitTime();
 
 /// <summary>
 /// Time since last frame.

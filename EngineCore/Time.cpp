@@ -2,10 +2,10 @@
 #include "GLFW/glfw3.h"
 
 float applicationStartTime;
-bool isInitialised = false;
-void Init()
+bool isTimeInitialised = false;
+void InitTime()
 {
-    if (!isInitialised)
+    if (!isTimeInitialised)
     {
         applicationStartTime = glfwGetTime();
     }

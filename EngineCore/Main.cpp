@@ -19,6 +19,7 @@
 
 #include "Mesh.h"
 #include "EngineData.h"
+#include "Time.h"
 
 // Vertices coordinates
 std::vector<Vertex> vertices
@@ -325,14 +326,13 @@ int main()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwSwapBuffers(window);
 
-	float deltaTime = 0;
 	double lastTime = glfwGetTime();
 
 	glm::mat4 model(1);
 
 	while (!glfwWindowShouldClose(window))
 	{
-		deltaTime = glfwGetTime() - lastTime;
+		DeltaTime = glfwGetTime() - lastTime;
 		lastTime = glfwGetTime();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -340,36 +340,48 @@ int main()
 
 		if (glfwGetKey(window, GLFW_KEY_A))
 		{
-			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(-1 * deltaTime, 0, 0));
+			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(-1 * DeltaTime, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_D))
 		{
-			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(1 * deltaTime, 0, 0));
+			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(1 * DeltaTime, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(0, 0, -1 * deltaTime));
+			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(0, 0, -1 * DeltaTime));
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(0, 0, 1 * deltaTime));
+			ActiveCamera->GetSceneObject()->GetTransform()->Translate(glm::vec3(0, 0, 1 * DeltaTime));
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_LEFT))
 		{
-			lightObj->GetTransform()->Translate(glm::vec3(-1 * deltaTime, 0, 0));
+			lightObj->GetTransform()->Translate(glm::vec3(-1 * DeltaTime, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_RIGHT))
 		{
-			lightObj->GetTransform()->Translate(glm::vec3(1 * deltaTime, 0, 0));
+			lightObj->GetTransform()->Translate(glm::vec3(1 * DeltaTime, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP))
 		{
-			lightObj->GetTransform()->Translate(glm::vec3(0, 0, -1 * deltaTime));
+			lightObj->GetTransform()->Translate(glm::vec3(0, 0, -1 * DeltaTime));
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
 		{
-			lightObj->GetTransform()->Translate(glm::vec3(0, 0, 1 * deltaTime));
+			lightObj->GetTransform()->Translate(glm::vec3(0, 0, 1 * DeltaTime));
+		}
+
+		for (IUpdatable* up : Updatable)
+		{
+			up->Update();
+		}
+
+		// Do physics
+
+		for (ILateUpdatable* lup : LateUpdatable)
+		{
+			lup->LateUpdate();
 		}
 
 		SetLightBufferData();
