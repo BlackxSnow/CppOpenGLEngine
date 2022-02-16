@@ -16,7 +16,7 @@ std::string GetFileContents(const char* fileName)
 	throw(errno);
 }
 
-Shader::Shader(const char* vertFile, const char* fragFile)
+void Shader::InitShader(const char* vertFile, const char* fragFile)
 {
 	std::string vertCode = GetFileContents(vertFile);
 	std::string fragCode = GetFileContents(fragFile);
@@ -44,6 +44,16 @@ Shader::Shader(const char* vertFile, const char* fragFile)
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+}
+
+Shader::Shader(std::string vertFile, std::string fragFile)
+{
+	InitShader(vertFile.c_str(), fragFile.c_str());
+}
+
+Shader::Shader(const char* vertFile, const char* fragFile)
+{
+	InitShader(vertFile, fragFile);
 }
 
 void Shader::Activate()

@@ -7,7 +7,7 @@ std::list<SceneObject*> SceneObjects;
 std::list<Renderer*> Renderers;
 std::list<Light*> SceneLights;
 
-std::shared_ptr<Camera> ActiveCamera;
+Camera* ActiveCamera;
 
 
 std::shared_ptr<std::vector<glm::mat4>> ShadowCasterMatrices;

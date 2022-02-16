@@ -22,7 +22,7 @@ public:
 	/// <param name="vertFile"></param>
 	/// <param name="fragFile"></param>
 	Shader(const char* vertFile, const char* fragFile);
-	
+	Shader(std::string vertFile, std::string fragFile);
 	/// <summary>
 	/// Set this shader as the currently active GL program.
 	/// </summary>
@@ -31,4 +31,5 @@ public:
 
 private:
 	void CompileErrors(unsigned int shader, const char* type);
+	void InitShader(const char* vertFile, const char* fragFile);
 };

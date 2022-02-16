@@ -4,7 +4,7 @@
 #include "Conversion.h"
 #include "GLErrors.h"
 #include <glm/gtc/type_ptr.hpp>
-#include "Main.h"
+#include "Engine.h"
 #include "EngineData.h"
 
 COMPONENT_DEFINITION(Component, Renderer)

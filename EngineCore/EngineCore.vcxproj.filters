@@ -42,9 +42,6 @@
     <ClInclude Include="ElementBuffer.h">
       <Filter>Header Files\OpenGL Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Main.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\OpenGL Rendering</Filter>
     </ClInclude>
@@ -105,10 +102,13 @@
     <ClInclude Include="EngineData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="Callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Callbacks.h">
+    <ClInclude Include="Engine.h">
+      <Filter>Header Files\OpenGL Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ETime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -117,9 +117,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ElementBuffer.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
       <Filter>Source Files\OpenGL Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
@@ -176,10 +173,13 @@
     <ClCompile Include="EngineData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
+    <ClCompile Include="Callbacks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Callbacks.cpp">
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files\OpenGL Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="ETime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,6 +2,7 @@
 
 #include <list>
 #include <GL/glew.h>
+#include <map>
 
 #include "SceneObject.h"
 #include "Renderer.h"
@@ -16,7 +17,7 @@ extern std::list<SceneObject*> SceneObjects;
 extern std::list<Renderer*> Renderers;
 extern std::list<Light*> SceneLights;
 
-extern std::shared_ptr<Camera> ActiveCamera;
+extern Camera* ActiveCamera;
 
 
 extern std::shared_ptr<std::vector<glm::mat4>> ShadowCasterMatrices;
