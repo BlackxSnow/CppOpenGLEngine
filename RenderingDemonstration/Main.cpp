@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "CameraController.h"
 #include "SpotLight.h"
+#include <DirectionalLight.h>
 
 int main()
 {
@@ -31,7 +32,8 @@ int main()
 
 	
 	SceneObject* light = new SceneObject(glm::vec3(0, 5, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1));
-	auto lightComponent = light->AddComponent<SpotLight>(glm::vec4(1, 1, 1, 1), 15, 15);
+	//auto lightComponent = light->AddComponent<SpotLight>(glm::vec4(1, 1, 1, 1), 15, 15);
+	auto lightComponent = light->AddComponent<DirectionalLight>(glm::vec4(1, 1, 1, 1), glm::normalize(glm::vec3(-1, -1, 1)));
 	
 	StartEngineLoop();
 
