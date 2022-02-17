@@ -15,7 +15,7 @@ int main()
 {
 	InitialiseEngine();
 
-	SceneObject* camera = new SceneObject(glm::vec3(0, 0, 1), glm::quat());
+	SceneObject* camera = new SceneObject(glm::vec3(0, 0, 1), glm::vec3(0,0,-1), glm::vec3(0,1,0));
 	auto cameraComponent = camera->AddComponent<Camera>(75, 0.1f, 100.0f);
 	camera->AddComponent<CameraController>(camera->GetTransform());
 
@@ -34,7 +34,7 @@ int main()
 	SceneObject* light = new SceneObject(glm::vec3(0, 5, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1));
 	//auto lightComponent = light->AddComponent<SpotLight>(glm::vec4(1, 1, 1, 1), 15, 15);
 	auto lightComponent = light->AddComponent<DirectionalLight>(glm::vec4(1, 1, 1, 1), glm::normalize(glm::vec3(-1, -1, 1)));
-	
+
 	StartEngineLoop();
 
 	return 0;

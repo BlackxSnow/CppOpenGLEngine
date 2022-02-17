@@ -50,6 +50,11 @@ float CalculateShadow(int shadowMapIndex, vec3 inverseLightRayDirection)
    vec3 normalDeviceCoords = lightSpaceCoords.xyz / lightSpaceCoords.w;
    // normalDeviceCoords.y *= -1;
    normalDeviceCoords = normalDeviceCoords * 0.5 + 0.5;
+
+   if (normalDeviceCoords.z > 1.0)
+   {
+      return 1.0;
+   }
    
    float shadowDepth = texture(LightDepthMaps, vec3(normalDeviceCoords.xy, shadowMapIndex)).r;
    float fragDepth = normalDeviceCoords.z;
