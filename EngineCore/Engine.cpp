@@ -18,6 +18,7 @@
 #include "Mesh.h"
 #include "EngineData.h"
 #include "ETime.h"
+#include "InputManager.h"
 #include <filesystem>
 
 std::map<std::string, std::shared_ptr<Shader>> Shaders;
@@ -135,12 +136,23 @@ void GenerateShadowMapArray(int mapCount)
 	glGenTextures(1, &ShadowMapArray);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, ShadowMapArray);
 	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_DEPTH_COMPONENT16, LightMapResolution, LightMapResolution, mapCount, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	float borderColour[] = { 1.0f,1.0f,1.0f,1.0f };
+	glTexParameterfv(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_BORDER_COLOR, borderColour);
 	LastShadowMapCount = mapCount;
 }
+
+// There are many possible improvements to this shadow algorithm, some are:
+//		- Cascaded shadow maps - Improves perspective aliasing, though is relatively complex
+//		- Automatic calculation of tight fitting light frustrums
+//		- Slope-scale depth bias (particularly accounting for near-far size
+//		- Texel incremented light movement for directional lights
+// Sources: 
+//		https://docs.microsoft.com/en-us/windows/win32/dxtecharts/common-techniques-to-improve-shadow-depth-maps?redirectedfrom=MSDN
+//		https://docs.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
 
 void RenderLightShadowMaps(int mapCount)
 {
@@ -241,7 +253,7 @@ void RenderTextureToScreen(GLuint texID, GLenum texType)
 		2, 3, 0
 	};
 
-	auto screenRender = Shaders["screenRender"];
+	auto& screenRender = Shaders["screenRender"];
 
 	glDisable(GL_DEPTH_TEST);
 	screenRender->Activate();
@@ -335,6 +347,7 @@ int StartEngineLoop()
 		gler::ProcessGLErrors(CLOGINFO);
 
 		glfwSwapBuffers(Window);
+		ResetCursorDelta();
 		glfwPollEvents();
 	}
 
@@ -361,6 +374,8 @@ int InitialiseEngine()
 		return -1;
 	}
 	LoadIncludes();
+	InitialiseInput();
+
 	glViewport(0, 0, windowWidth, windowHeight);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

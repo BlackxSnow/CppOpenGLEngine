@@ -37,7 +37,17 @@ public:
 	/// Return the normalized vector pointing forward.
 	/// </summary>
 	/// <returns></returns>
-	glm::vec3 GetForwardVector();
+	glm::vec3 Forward();
+	/// <summary>
+	/// Return the normalized vector pointing upwards.
+	/// </summary>
+	/// <returns></returns>
+	glm::vec3 Up();
+	/// <summary>
+	/// Return the normalized vector pointing right.
+	/// </summary>
+	/// <returns></returns>
+	glm::vec3 Right();
 
 	/// <summary>
 	/// Translate the transform by the specified amount

@@ -61,9 +61,6 @@ std::shared_ptr<ComponentType> SceneObject::AddComponent(Args&&... params)
 	// NOTE: If this starts spewing errors that make no fucking sense, it's almost certainly because the component inheritor is missing the "public" keyword before it's inheritance.
 	Components->emplace_back(component);
 	return component;
-
-	//Components->emplace_back(std::make_shared<ComponentType>(this, std::forward<Args>(params)...));
-	//return dynamic_cast<ComponentType>(Components->back());
 }
 
 template<class ComponentType>

@@ -20,3 +20,13 @@ ILateUpdatable::~ILateUpdatable()
 {
 	LateUpdatable.remove(this);
 }
+
+IFixedUpdatable::IFixedUpdatable()
+{
+	FixedUpdatable.push_back(this);
+}
+
+IFixedUpdatable::~IFixedUpdatable()
+{
+	FixedUpdatable.remove(this);
+}

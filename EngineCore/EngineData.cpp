@@ -15,3 +15,4 @@ std::shared_ptr<std::vector<glm::mat4>> ShadowCasterMatrices;
 // Callbacks
 std::list<IUpdatable*> Updatable;
 std::list<ILateUpdatable*> LateUpdatable;
+std::list<IFixedUpdatable*> FixedUpdatable;

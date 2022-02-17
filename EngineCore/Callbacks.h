@@ -23,3 +23,12 @@ public:
 	ILateUpdatable();
 	~ILateUpdatable();
 };
+
+class IFixedUpdatable
+{
+public:
+	virtual void FixedUpdate() = 0;
+
+	IFixedUpdatable();
+	~IFixedUpdatable();
+};

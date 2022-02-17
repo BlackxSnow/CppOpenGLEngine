@@ -80,14 +80,27 @@ glm::quat Transform::GetWorldRotation()
     return result;
 }
 
-glm::vec3 Transform::GetForwardVector()
+glm::vec3 Transform::Forward()
 {
     glm::vec3 forward = glm::vec3(0,0,-1);
     forward = GetWorldRotation() * forward;
-    Transform* nextParent = GetParent();
 
     return forward;
     
+}
+
+glm::vec3 Transform::Up()
+{
+    glm::vec3 up = glm::vec3(0, 1, 0);
+    up = GetWorldRotation() * up;
+    return up;
+}
+
+glm::vec3 Transform::Right()
+{
+    glm::vec3 right = glm::vec3(1, 0, 0);
+    right = GetWorldRotation() * right;
+    return right;
 }
 
 void Transform::Translate(glm::vec3 translation)
@@ -116,6 +129,10 @@ Transform::Transform(SceneObject* attachedTo) : Component(std::move(attachedTo))
 Transform::Transform(SceneObject* attachedTo, glm::vec3 pos, glm::quat rot, Transform* parent) : Component(std::move(attachedTo))
 {
     Position = pos;
+    if (rot.x == 0 && rot.y == 0 && rot.z == 0 && rot.w == 0)
+    {
+        rot = glm::quat(1, 0, 0, 0);
+    }
     Rotation = rot;
     Scale = glm::vec3(1, 1, 1);
     Parent = parent;
