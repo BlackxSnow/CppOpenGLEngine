@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{ed942129-c6e8-402c-95b0-79713b08a4e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{d69d8adc-c8b4-4a14-9eb3-be50ff45b3f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Physics">
+      <UniqueIdentifier>{86a952c6-d68d-4575-9e9e-bfd861bb0fed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneObject.h">
@@ -118,7 +124,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rigidbody.h">
-      <Filter>Header Files\Components</Filter>
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,7 +210,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rigidbody.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

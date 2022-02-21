@@ -101,7 +101,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>C:\Users\Calvin\source\repos\2022AIE-PhysicsRendering\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew32.lib;opengl32.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -137,7 +137,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>C:\Users\Calvin\source\repos\2022AIE-PhysicsRendering\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew32.lib;opengl32.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsoleLogging.h" />
     <ClInclude Include="Conversion.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ETime.h" />
@@ -187,6 +189,7 @@
   <ItemGroup>
     <ClCompile Include="Callbacks.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsoleLogging.cpp" />
     <ClCompile Include="Conversion.cpp" />
@@ -206,6 +209,7 @@
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />
