@@ -180,6 +180,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="TextRendering.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ETime.h" />
     <ClInclude Include="Transform.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stb.cpp" />
+    <ClCompile Include="TextRendering.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ETime.cpp" />
     <ClCompile Include="Transform.cpp" />

@@ -20,9 +20,12 @@
 #include "ETime.h"
 #include "InputManager.h"
 #include <filesystem>
+#include "TextRendering.h"
 
 std::map<std::string, std::shared_ptr<Shader>> Shaders;
 GLFWwindow* Window;
+
+Event<> OnGUIDraw;
 
 // Vertices coordinates
 std::vector<Vertex> vertices
@@ -294,10 +297,12 @@ void LoadBaseShaders()
 	std::shared_ptr<Shader> shader = std::shared_ptr<Shader>(new Shader(shaderPath + "default.vert", shaderPath + "default.frag"));
 	std::shared_ptr<Shader> shadowMapShader = std::shared_ptr<Shader>(new Shader(shaderPath + "ShadowMap.vert", shaderPath + "ShadowMap.frag"));
 	std::shared_ptr<Shader> screenRender = std::shared_ptr<Shader>(new Shader(shaderPath + "ScreenRender.vert", shaderPath + "ScreenRender.frag"));
+	std::shared_ptr<Shader> text = std::shared_ptr<Shader>(new Shader(shaderPath + "Text.vert", shaderPath + "Text.frag"));
 
 	Shaders.insert({ "default", shader });
 	Shaders.insert({ "shadowMap", shadowMapShader });
 	Shaders.insert({ "screenRender", screenRender });
+	Shaders.insert({ "text", text });
 }
 
 int StartEngineLoop()
@@ -346,6 +351,10 @@ int StartEngineLoop()
 		}
 		gler::ProcessGLErrors(CLOGINFO);
 
+		OnGUIDraw.Invoke();
+
+		gler::ProcessGLErrors(CLOGINFO);
+
 		glfwSwapBuffers(Window);
 		ResetCursorDelta();
 		glfwPollEvents();
@@ -375,15 +384,17 @@ int InitialiseEngine()
 	}
 	LoadIncludes();
 	InitialiseInput();
+	LoadBaseShaders();
+	txt::Init();
 
 	glViewport(0, 0, windowWidth, windowHeight);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glGenFramebuffers(1, &ShadowMapFrameBuffer);
 	ShadowCasterMatrices = std::shared_ptr<std::vector<glm::mat4>>(new std::vector<glm::mat4>);
-
-	LoadBaseShaders();
 
 	GenerateLightBuffer();
 

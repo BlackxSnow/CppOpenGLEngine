@@ -11,11 +11,14 @@
 #include "Light.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Event.h"
 
 int InitialiseEngine();
 int StartEngineLoop();
 
 extern std::map<std::string, std::shared_ptr<Shader>> Shaders;
 extern GLFWwindow* Window;
+
+extern Event<> OnGUIDraw;
 
 void SetActiveCamera(std::shared_ptr<Camera> cam);

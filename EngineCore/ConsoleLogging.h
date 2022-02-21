@@ -4,6 +4,9 @@
 
 #define __FILENAME__ strrchr("\\" __FILE__, '\\') + 1
 #define CLOGINFO __LINE__, __func__, __FILENAME__
+#define LogInfo(x) clog::Info(CLOGINFO, x);
+#define LogWarning(x) clog::Warning(CLOGINFO, x);
+#define LogError(x, t) clog::Error(CLOGINFO, x, t);
 
 #include <string>
 

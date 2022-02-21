@@ -132,6 +132,9 @@
     <ClInclude Include="SphereCollider.h">
       <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="TextRendering.h">
+      <Filter>Header Files\OpenGL Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneObject.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="SphereCollider.cpp">
       <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRendering.cpp">
+      <Filter>Source Files\OpenGL Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

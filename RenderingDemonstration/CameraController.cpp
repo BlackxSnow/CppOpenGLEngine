@@ -2,6 +2,7 @@
 #include <Engine.h>
 #include <ETime.h>
 #include "InputManager.h"
+#include "TextRendering.h"
 
 COMPONENT_DEFINITION(Component, CameraController);
 
@@ -63,7 +64,7 @@ void CameraController::Update()
 CameraController::CameraController(SceneObject* attachedTo, Transform* transform) : Component(attachedTo), IUpdatable()
 {
 	_camTransform = transform;
-	// TODO implement some sort of hash for the name parameter.
+	// TODO implement some sort of hash for the name parameter so multiple callbacks can be made with the same name by different objects.
 	RegisterInputCallback(GLFW_MOUSE_BUTTON_RIGHT, GLFW_PRESS, "StartMouseRotation", [this](int mods) {StartMouseRotation(mods); });
 	RegisterInputCallback(GLFW_MOUSE_BUTTON_RIGHT, GLFW_RELEASE, "StopMouseRotation", [this](int mods) {StopMouseRotation(mods); });
 }

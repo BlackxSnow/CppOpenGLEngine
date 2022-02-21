@@ -10,10 +10,16 @@
 #include "CameraController.h"
 #include "SpotLight.h"
 #include <DirectionalLight.h>
+#include "TextRendering.h"
+#include "ConsoleLogging.h"
 
 int main()
 {
 	InitialiseEngine();
+
+	txt::LoadFont(std::filesystem::absolute(std::filesystem::path(".\\Fonts\\Metropolis-Regular.otf")).string());
+
+	OnGUIDraw.Register("DrawText", []() { txt::RenderText("Text Test", "Metropolis-Regular", 25, 25, 1, glm::vec3(1, 1, 1)); });
 
 	SceneObject* camera = new SceneObject(glm::vec3(0, 0, 1), glm::vec3(0,0,-1), glm::vec3(0,1,0));
 	auto cameraComponent = camera->AddComponent<Camera>(75, 0.1f, 100.0f);
