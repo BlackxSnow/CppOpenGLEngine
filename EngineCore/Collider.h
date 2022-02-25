@@ -15,4 +15,5 @@ public:
 
 	virtual Collision::ColliderType ColliderType() = 0;
 	Collider(SceneObject* attachedTo);
+	~Collider();
 };

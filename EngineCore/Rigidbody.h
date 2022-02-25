@@ -3,7 +3,7 @@
 #include "Component.h"
 #include <glm/glm.hpp>
 
-enum PhysicsBehaviour
+enum class PhysicsBehaviour
 {
 	Dynamic,
 	Static
@@ -18,9 +18,13 @@ public:
 	glm::vec3 Velocity;
 	PhysicsBehaviour PhysicsType;
 
+	void Integrate();
+
 	Rigidbody(SceneObject* attachedTo);
-	Rigidbody(SceneObject* attachedTo, float Mass);
-	Rigidbody(SceneObject* attachedTo, float Mass, PhysicsBehaviour type);
+	Rigidbody(SceneObject* attachedTo, float mass);
+	Rigidbody(SceneObject* attachedTo, float mass, PhysicsBehaviour type);
+
+	~Rigidbody();
 
 	bool UseGravity = true;
 };

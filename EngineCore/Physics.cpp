@@ -24,6 +24,11 @@ namespace Physics
 		{
 			// TODO: Do physics
 
+			for (const auto& rb : Rigidbodies)
+			{
+				rb->Integrate();
+			}
+
 			for (auto col = Colliders.begin(); col != Colliders.end(); ++col)
 			{
 				for (auto col2 = std::next(col); col2 != Colliders.end(); ++col2)

@@ -7,3 +7,8 @@ Collider::Collider(SceneObject* attachedTo) : Component(attachedTo)
 {
 	Colliders.push_back(this);
 }
+
+Collider::~Collider()
+{
+	Colliders.remove(this);
+}
