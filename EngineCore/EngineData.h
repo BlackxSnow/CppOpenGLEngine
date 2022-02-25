@@ -9,6 +9,7 @@
 #include "Light.h"
 #include "Camera.h"
 #include "Callbacks.h"
+#include "Collider.h"
 
 extern GLuint ShadowMapArray;
 
@@ -16,6 +17,8 @@ extern std::list<SceneObject*> SceneObjects;
 
 extern std::list<Renderer*> Renderers;
 extern std::list<Light*> SceneLights;
+
+extern std::list<Collider*> Colliders;
 
 extern Camera* ActiveCamera;
 

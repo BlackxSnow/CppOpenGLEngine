@@ -12,6 +12,12 @@
 #include <DirectionalLight.h>
 #include "TextRendering.h"
 #include "ConsoleLogging.h"
+#include "SphereCollider.h"
+
+void STDOUT(Collision::CollisionData d)
+{
+	std::cout << "Colliding! Depth: " << d.Depth << std::endl;
+}
 
 int main()
 {
@@ -34,7 +40,13 @@ int main()
 
 	SceneObject* cube = new SceneObject(glm::vec3(0, 0, -2), glm::quat());
 	auto cubeRenderer = cube->AddComponent<Renderer>(Shaders["default"]);
+	cube->AddComponent<SphereCollider>(1.0f);
 	cubeRenderer->ImportMeshesFromOBJ("Models/Cube.obj");
+
+	SceneObject* cube2 = new SceneObject(glm::vec3(0, 2.1f, -1.5f), glm::quat());
+	auto cubeRenderer2 = cube2->AddComponent<Renderer>(Shaders["default"]);
+	cube2->AddComponent<SphereCollider>(1.0f)->OnCollide.Register("STDOUT", std::function<void(Collision::CollisionData)>(STDOUT));
+	cubeRenderer2->ImportMeshesFromOBJ("Models/Cube.obj");
 
 	
 	SceneObject* light = new SceneObject(glm::vec3(0, 5, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1));

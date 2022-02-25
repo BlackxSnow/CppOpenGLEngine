@@ -28,7 +28,7 @@ LightData PointLight::BuildLightData(int* shadowMapIndex, std::vector<glm::mat4>
 
 void PointLight::BuildLightMatrices(OUT glm::mat4* view, OUT glm::mat4* projection)
 {
-    //TODO
+    //TODO (This requires special handling using a cubemap. I'm too burnt out from shadows so I'll (hopefully) do it later.
 }
 
 PointLight::PointLight(SceneObject* attachedComponent, glm::vec4 lightColour) : Light(attachedComponent, lightColour)

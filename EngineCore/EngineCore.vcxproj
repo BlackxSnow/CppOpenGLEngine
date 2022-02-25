@@ -165,6 +165,7 @@
     <ClInclude Include="Conversion.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="ElementBuffer.h" />
+    <ClInclude Include="EMath.h" />
     <ClInclude Include="EngineData.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="GLErrors.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClInclude Include="DirectionalLight.h" />
     <ClCompile Include="ElementBuffer.cpp" />
+    <ClCompile Include="EMath.cpp" />
     <ClCompile Include="EngineData.cpp" />
     <ClCompile Include="GLErrors.cpp" />
     <ClCompile Include="InputManager.cpp" />

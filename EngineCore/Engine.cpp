@@ -323,7 +323,7 @@ int StartEngineLoop()
 			up->Update();
 		}
 
-		// Do physics
+		Physics::UpdatePhysicsSimulation();
 
 		for (ILateUpdatable* lup : LateUpdatable)
 		{

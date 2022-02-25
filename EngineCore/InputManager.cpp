@@ -74,7 +74,6 @@ void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	CursorDelta = glm::vec2(xpos, ypos) - LastCursorPos;
 	LastCursorPos = glm::vec2(xpos, ypos);
-	clog::Info(CLOGINFO, "recorded delta of " + std::to_string(CursorDelta.x) + ", " + std::to_string(CursorDelta.y));
 }
 
 glm::vec2 GetPointerDelta()

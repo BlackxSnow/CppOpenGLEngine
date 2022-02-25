@@ -1,4 +1,6 @@
 #include "Shader.h"
+#include <filesystem>
+#include "ConsoleLogging.h"
 
 std::string GetFileContents(const char* fileName)
 {
@@ -18,6 +20,21 @@ std::string GetFileContents(const char* fileName)
 
 void Shader::InitShader(const char* vertFile, const char* fragFile)
 {
+	bool vertExists = std::filesystem::exists(vertFile);
+	bool fragExists = std::filesystem::exists(fragFile);
+	if (!vertExists || !fragExists)
+	{
+		LogError("File reading error(s) for shader:", false);
+		if (!vertExists)
+		{
+			LogError("\tFile " + std::string(vertFile) + " does not exist", false);
+		}
+		if (!fragExists)
+		{
+			LogError("\tFile " + std::string(fragFile) + " does not exist", false);
+		}
+	}
+
 	std::string vertCode = GetFileContents(vertFile);
 	std::string fragCode = GetFileContents(fragFile);
 

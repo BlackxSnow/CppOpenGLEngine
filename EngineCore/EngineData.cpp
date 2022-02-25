@@ -7,6 +7,8 @@ std::list<SceneObject*> SceneObjects;
 std::list<Renderer*> Renderers;
 std::list<Light*> SceneLights;
 
+std::list<Collider*> Colliders;
+
 Camera* ActiveCamera;
 
 
