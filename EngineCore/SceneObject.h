@@ -11,7 +11,7 @@ class SceneObject
 public:
 	Transform* GetTransform();
 	
-	std::vector<std::shared_ptr<Component>>* Components;
+	std::vector<std::shared_ptr<Component>> Components;
 
 	/// <summary>
 	/// Add a component of provided template type and pass 'params' to its constructor.
@@ -29,7 +29,7 @@ public:
 	/// <typeparam name="ComponentType"></typeparam>
 	/// <returns></returns>
 	template<class ComponentType>
-	ComponentType* GetComponent();
+	std::shared_ptr<ComponentType> GetComponent();
 
 	/// <summary>
 	/// Attempt to remove a component of provided template type and return whether the operation was successful.
@@ -59,21 +59,21 @@ std::shared_ptr<ComponentType> SceneObject::AddComponent(Args&&... params)
 	std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(this, std::forward<Args>(params)...);
 
 	// NOTE: If this starts spewing errors that make no fucking sense, it's almost certainly because the component inheritor is missing the "public" keyword before it's inheritance.
-	Components->emplace_back(component);
+	Components.emplace_back(component);
 	return component;
 }
 
 template<class ComponentType>
-ComponentType* SceneObject::GetComponent()
+std::shared_ptr<ComponentType> SceneObject::GetComponent()
 {
-	for (Component&& component : Components)
+	for (std::shared_ptr<Component>& component : Components)
 	{
 		if (component->IsClassType(ComponentType::Type))
 		{
-			return *static_cast<ComponentType*>(component.get());
+			return std::static_pointer_cast<ComponentType>(component);
 		}
 	}
-	return *std::unique_ptr<ComponentType>(nullptr);
+	return std::shared_ptr<ComponentType>(nullptr);
 }
 
 template<class ComponentType>

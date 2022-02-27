@@ -34,7 +34,7 @@ void Transform::SetScale(glm::vec3 scale)
     Scale = scale;
 }
 
-glm::mat4& Transform::BuildModelMatrix()
+glm::mat4 Transform::BuildModelMatrix()
 {
     glm::mat4 result = glm::mat4(1);
 

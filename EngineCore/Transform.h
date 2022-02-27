@@ -21,7 +21,7 @@ public:
 	/// Return a matrix representing the model's total transform (Including parents)
 	/// </summary>
 	/// <returns></returns>
-	glm::mat4& BuildModelMatrix();
+	glm::mat4 BuildModelMatrix();
 
 	/// <summary>
 	/// Return the world position of the transform.

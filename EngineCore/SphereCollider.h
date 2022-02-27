@@ -11,6 +11,8 @@ public:
 	float Radius;
 
 	virtual Collision::ColliderType ColliderType() override { return _colliderType; }
+	
+	virtual void RecalculateBounds() override;
 
 	SphereCollider(SceneObject* attachedTo);
 	SphereCollider(SceneObject* attachedTo, float radius);

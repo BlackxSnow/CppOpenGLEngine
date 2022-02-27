@@ -13,6 +13,7 @@
 #include "TextRendering.h"
 #include "ConsoleLogging.h"
 #include "SphereCollider.h"
+#include "AABBCollider.h"
 #include "Rigidbody.h"
 
 void STDOUT(Collision::CollisionData d)
@@ -37,9 +38,11 @@ int main()
 	SceneObject* plane = new SceneObject(glm::vec3(0, -1, -1), glm::quat());
 	plane->GetTransform()->SetScale(glm::vec3(10, 1, 10));
 	auto planeRenderer = plane->AddComponent<Renderer>(Shaders["default"]);
+	plane->AddComponent<Rigidbody>(1, PhysicsBehaviour::Static);
+	plane->AddComponent<AABBCollider>(glm::vec3(10,0.1f, 10));
 	planeRenderer->ImportMeshesFromOBJ("Models/Plane.obj");
 
-	SceneObject* cube = new SceneObject(glm::vec3(0, 0, -2), glm::quat());
+	SceneObject* cube = new SceneObject(glm::vec3(0, 10, -2), glm::quat());
 	auto cubeRenderer = cube->AddComponent<Renderer>(Shaders["default"]);
 	cube->AddComponent<Rigidbody>();
 	cube->AddComponent<SphereCollider>(1.0f);

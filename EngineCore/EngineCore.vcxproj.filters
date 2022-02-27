@@ -138,6 +138,9 @@
     <ClInclude Include="EMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AABBCollider.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneObject.cpp">
@@ -229,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="EMath.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBCollider.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
