@@ -81,8 +81,19 @@ namespace Physics
 		float bFinalNormalSpeed = ((2 * aMass) / (bMass + aMass)) * aSpeedAlongNormal + ((bMass - aMass) / (bMass + aMass)) * bSpeedAlongNormal;
 
 		float totalSpeed = aFinalNormalSpeed + bFinalNormalSpeed;
-		float aNormalFactor = aFinalNormalSpeed / totalSpeed;
-		float bNormalFactor = bFinalNormalSpeed / totalSpeed;
+		float aNormalFactor;
+		float bNormalFactor;
+
+		if (totalSpeed == 0)
+		{
+			aNormalFactor = 0;
+			bNormalFactor = 0;
+		}
+		else
+		{
+			aNormalFactor = aFinalNormalSpeed / totalSpeed;
+			bNormalFactor = bFinalNormalSpeed / totalSpeed;
+		}
 
 		aT->SetPosition(aT->GetPosition() - aData.Normal * aData.Depth * aNormalFactor);
 		bT->SetPosition(bT->GetPosition() - bData.Normal * bData.Depth * bNormalFactor);

@@ -74,9 +74,9 @@ int main()
 	CreateWall(glm::vec3(0, 10, -10), glm::vec3(10, 10, 0.5f));
 	CreateWall(glm::vec3(0, 10, 10), glm::vec3(10, 10, 0.5f));
 
-	auto redCube = CreateCube(glm::vec3(0, 5, -2), 1, glm::vec3(1,0,0));
+	auto redCube = CreateCube(glm::vec3(0, 5, 0), 1, glm::vec3(1,0,0));
 	redCube->Name = "Red Cube";
-	auto greenCube = CreateCube(glm::vec3(0, 10, -2), 1, glm::vec3(0,1,0));
+	auto greenCube = CreateCube(glm::vec3(0, 10, 0), 1, glm::vec3(0,1,0));
 	greenCube->Name = "Green Cube";
 
 	auto blueCube = CreateCube(glm::vec3(9, 5, 0), 1, glm::vec3(0, 0, 1), glm::vec3(-10, 0, 0), false);
