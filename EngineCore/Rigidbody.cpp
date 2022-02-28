@@ -10,14 +10,14 @@
 
 COMPONENT_DEFINITION(Component, Rigidbody);
 
-void Rigidbody::Integrate()
+void Rigidbody::Integrate(const float delta)
 {
 	if (PhysicsType != PhysicsBehaviour::Static)
 	{
-		Velocity += glm::vec3(0, -1, 0) * Physics::Gravity * DeltaTime;
+		Velocity += glm::vec3(0, -1, 0) * Physics::Gravity * delta;
 
 		Transform* t = GetSceneObject()->GetTransform();
-		t->SetPosition(t->GetPosition() + Velocity * DeltaTime);
+		t->SetPosition(t->GetPosition() + Velocity * delta);
 	}
 }
 

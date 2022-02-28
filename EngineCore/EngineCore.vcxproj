@@ -180,6 +180,7 @@
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderData.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TextRendering.h" />

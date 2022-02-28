@@ -30,7 +30,7 @@ public:
 	/// Process the movement of this rigidbody using DeltaTime.
 	/// Called within the engine. Manual calling of this function is inadvisable.
 	/// </summary>
-	void Integrate();
+	void Integrate(const float delta);
 
 	/// <summary>
 	/// Recalculate the bounds of this rigidbody using its colliders.

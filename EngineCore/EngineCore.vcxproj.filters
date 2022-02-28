@@ -141,6 +141,9 @@
     <ClInclude Include="AABBCollider.h">
       <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneObject.cpp">

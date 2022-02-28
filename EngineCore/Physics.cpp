@@ -16,7 +16,7 @@
 namespace Physics
 {
 	float Gravity = 9.807f;
-	float FixedTimestep = 1/60;
+	float FixedTimestep = 1.0/60.0;
 
 	float AccumulatedSimTime = 0;
 
@@ -51,29 +51,44 @@ namespace Physics
 		target.rigidbody->Velocity = tangentVelocity - normalVelocity;
 	}
 
+	/// <summary>
+	/// Resolve a dynamic-dynamic elastic collision.
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="aData"></param>
+	/// <param name="b"></param>
+	/// <param name="bData"></param>
 	void ResolveElastic(const RBBounds& a, const Collision::CollisionData& aData, const RBBounds& b, const Collision::CollisionData& bData)
 	{
 		Transform* aT = a.rigidbody->GetSceneObject()->GetTransform();
 		Transform* bT = b.rigidbody->GetSceneObject()->GetTransform();
 
-		float aNormalMagnitude = glm::dot(a.rigidbody->Velocity, aData.Normal);
-		float bNormalMagnitude = glm::dot(b.rigidbody->Velocity, bData.Normal);
-		float totalNormalVelocity = aNormalMagnitude + bNormalMagnitude;
+		float aSpeedAlongNormal = glm::dot(a.rigidbody->Velocity, aData.Normal);
+		float bSpeedAlongNormal = glm::dot(b.rigidbody->Velocity, aData.Normal);
 
-		glm::vec3 aNormalVelocity = aNormalMagnitude * aData.Normal;
-		glm::vec3 bNormalVelocity = bNormalMagnitude * bData.Normal;
+		glm::vec3 aVelocityAlongNormal = aSpeedAlongNormal * aData.Normal;
+		glm::vec3 bVelocityAlongNormal = bSpeedAlongNormal * aData.Normal;
 
-		float aNormalFactor = aNormalMagnitude / totalNormalVelocity;
-		float bNormalFactor = bNormalMagnitude / totalNormalVelocity;
+		float& aMass = a.rigidbody->Mass;
+		float& bMass = b.rigidbody->Mass;
+
+		// REF: https://courses.lumenlearning.com/boundless-physics/chapter/collisions/
+		// "Elastic Collisions in One Dimension"
+		float aFinalNormalSpeed = ((aMass - bMass) / (bMass + aMass)) * aSpeedAlongNormal + ((2 * bMass) / (bMass + aMass)) * bSpeedAlongNormal;
+		float bFinalNormalSpeed = ((2 * aMass) / (bMass + aMass)) * aSpeedAlongNormal + ((bMass - aMass) / (bMass + aMass)) * bSpeedAlongNormal;
+
+		float totalSpeed = abs(aFinalNormalSpeed) + abs(bFinalNormalSpeed);
+		float aNormalFactor = aFinalNormalSpeed / totalSpeed;
+		float bNormalFactor = bFinalNormalSpeed / totalSpeed;
 
 		aT->SetPosition(aT->GetPosition() - aData.Normal * aData.Depth * aNormalFactor);
 		bT->SetPosition(bT->GetPosition() - bData.Normal * bData.Depth * bNormalFactor);
 
-		glm::vec3 aTangentVelocity = a.rigidbody->Velocity - aNormalVelocity;
-		glm::vec3 bTangentVelocity = b.rigidbody->Velocity - bNormalVelocity;
+		glm::vec3 aTangentVelocity = a.rigidbody->Velocity - aData.Normal * aSpeedAlongNormal;
+		glm::vec3 bTangentVelocity = b.rigidbody->Velocity - aData.Normal * bSpeedAlongNormal;
 
-		a.rigidbody->Velocity = aTangentVelocity - aNormalVelocity;
-		b.rigidbody->Velocity = bTangentVelocity - bNormalVelocity;
+		a.rigidbody->Velocity = aTangentVelocity + aData.Normal * aFinalNormalSpeed;
+		b.rigidbody->Velocity = bTangentVelocity + aData.Normal * bFinalNormalSpeed;
 	}
 
 
@@ -141,7 +156,7 @@ namespace Physics
 			glm::vec3 sqrCenterSum = glm::vec3(0, 0, 0);
 			for (const auto& rb : Rigidbodies)
 			{
-				rb->Integrate();
+				rb->Integrate(FixedTimestep);
 				bounds.push_back({ rb->GetWorldBounds(), rb });
 				RBBounds& rbBounds = bounds[bounds.size() - 1];
 				centerSum += rbBounds.bounds.Center;
