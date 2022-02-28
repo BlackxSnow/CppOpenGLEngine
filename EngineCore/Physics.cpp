@@ -339,9 +339,9 @@ namespace Collision
 
 			const float distances[6] =
 			{
-				(bMax.x - aMin.x), (bMin.x - aMax.x), // Left of A to right of B, right of A to left of B
-				(bMax.y - aMin.y), (bMin.y - aMax.y),
-				(bMax.z - aMin.z), (bMin.z - aMax.z)
+				(bMax.x - aMin.x), (aMax.x - bMin.x),
+				(bMax.y - aMin.y), (aMax.y - bMin.y),
+				(bMax.z - aMin.z), (aMax.z - bMin.z)
 			};
 
 			float minDepth = FLT_MAX;

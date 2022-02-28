@@ -21,6 +21,15 @@ void STDOUT(Collision::CollisionData d)
 	std::cout << "Colliding! Depth: " << d.Depth << std::endl;
 }
 
+void CreateCube(glm::vec3 pos)
+{
+	SceneObject* cube = new SceneObject(pos, glm::quat());
+	auto cubeRenderer = cube->AddComponent<Renderer>(Shaders["default"]);
+	cube->AddComponent<Rigidbody>();
+	cube->AddComponent<AABBCollider>(1.0f);
+	cubeRenderer->ImportMeshesFromOBJ("Models/Cube.obj");
+}
+
 int main()
 {
 	InitialiseEngine();
@@ -42,16 +51,8 @@ int main()
 	plane->AddComponent<AABBCollider>(glm::vec3(10,0.1f, 10));
 	planeRenderer->ImportMeshesFromOBJ("Models/Plane.obj");
 
-	SceneObject* cube = new SceneObject(glm::vec3(0, 10, -2), glm::quat());
-	auto cubeRenderer = cube->AddComponent<Renderer>(Shaders["default"]);
-	cube->AddComponent<Rigidbody>();
-	cube->AddComponent<SphereCollider>(1.0f);
-	cubeRenderer->ImportMeshesFromOBJ("Models/Cube.obj");
-
-	//SceneObject* cube2 = new SceneObject(glm::vec3(0, 2.1f, -1.5f), glm::quat());
-	//auto cubeRenderer2 = cube2->AddComponent<Renderer>(Shaders["default"]);
-	//cube2->AddComponent<SphereCollider>(1.0f)->OnCollide.Register("STDOUT", std::function<void(Collision::CollisionData)>(STDOUT));
-	//cubeRenderer2->ImportMeshesFromOBJ("Models/Cube.obj");
+	CreateCube(glm::vec3(0, 5, -2));
+	//CreateCube(glm::vec3(0, 10, -2));
 
 	
 	SceneObject* light = new SceneObject(glm::vec3(0, 5, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1));
