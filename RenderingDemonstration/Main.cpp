@@ -15,13 +15,15 @@
 #include "SphereCollider.h"
 #include "AABBCollider.h"
 #include "Rigidbody.h"
+#include "InputManager.h"
 
-void STDOUT(Collision::CollisionData d)
-{
-	std::cout << "Colliding! Depth: " << d.Depth << std::endl;
-}
-
-void CreateCube(glm::vec3 pos, float mass = 1, glm::vec3 colour = glm::vec3(0.7f,0.7f,0.7f))
+/// <summary>
+/// Create a cube object with pre-defined components.
+/// </summary>
+/// <param name="pos"></param>
+/// <param name="mass"></param>
+/// <param name="colour"></param>
+SceneObject* CreateCube(glm::vec3 pos, float mass = 1, glm::vec3 colour = glm::vec3(0.7f,0.7f,0.7f))
 {
 	SceneObject* cube = new SceneObject(pos, glm::quat());
 	auto cubeRenderer = cube->AddComponent<Renderer>(Shaders["default"]);
@@ -30,6 +32,7 @@ void CreateCube(glm::vec3 pos, float mass = 1, glm::vec3 colour = glm::vec3(0.7f
 	cube->AddComponent<Rigidbody>(mass);
 	cube->AddComponent<AABBCollider>(1.0f);
 	cubeRenderer->ImportMeshesFromOBJ("Models/Cube.obj");
+	return cube;
 }
 
 int main()
@@ -52,16 +55,20 @@ int main()
 	planeRenderer->ColourSetting = ShaderColour::Uniform;
 	planeRenderer->Colour = glm::vec3(0.7f, 0.7f, 0.7f);
 	plane->AddComponent<Rigidbody>(1, PhysicsBehaviour::Static);
-	plane->AddComponent<AABBCollider>(glm::vec3(10,0.1f, 10));
+	plane->AddComponent<AABBCollider>(glm::vec3(0,-1,0), glm::vec3(10,1.0f, 10));
 	planeRenderer->ImportMeshesFromOBJ("Models/Plane.obj");
 
-	CreateCube(glm::vec3(0, 5, -2), 1, glm::vec3(1,0,0));
-	CreateCube(glm::vec3(0, 10, -2), 10, glm::vec3(0,1,0));
+	auto blueCube = CreateCube(glm::vec3(0, 5, -2), 1, glm::vec3(1,0,0));
+	blueCube->Name = "Blue Cube";
+	auto greenCube = CreateCube(glm::vec3(0, 10, -2), 1, glm::vec3(0,1,0));
+	greenCube->Name = "Green Cube";
 
 	
 	SceneObject* light = new SceneObject(glm::vec3(0, 5, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, -1));
 	//auto lightComponent = light->AddComponent<SpotLight>(glm::vec4(1, 1, 1, 1), 15, 15);
 	auto lightComponent = light->AddComponent<DirectionalLight>(glm::vec4(1, 1, 1, 1), glm::normalize(glm::vec3(-1, -1, 1)));
+
+	RegisterInputCallback(GLFW_KEY_SPACE, GLFW_PRESS, "STDCOUTLINE", std::function<void(int)>([](int _) {std::cout << "----------\n"; }));
 
 	StartEngineLoop();
 

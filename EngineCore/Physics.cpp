@@ -9,14 +9,17 @@
 #include "SphereCollider.h"
 #include "EngineData.h"
 #include "AABBCollider.h"
+#include "ConsoleLogging.h"
+#include "EUtil.h"
 
 #include <vector>
 #include <algorithm>
+#include <iomanip>
 
 namespace Physics
 {
 	float Gravity = 9.807f;
-	float FixedTimestep = 1.0/60.0;
+	float FixedTimestep = 1.0/120.0;
 
 	float AccumulatedSimTime = 0;
 
@@ -77,7 +80,7 @@ namespace Physics
 		float aFinalNormalSpeed = ((aMass - bMass) / (bMass + aMass)) * aSpeedAlongNormal + ((2 * bMass) / (bMass + aMass)) * bSpeedAlongNormal;
 		float bFinalNormalSpeed = ((2 * aMass) / (bMass + aMass)) * aSpeedAlongNormal + ((bMass - aMass) / (bMass + aMass)) * bSpeedAlongNormal;
 
-		float totalSpeed = abs(aFinalNormalSpeed) + abs(bFinalNormalSpeed);
+		float totalSpeed = aFinalNormalSpeed + bFinalNormalSpeed;
 		float aNormalFactor = aFinalNormalSpeed / totalSpeed;
 		float bNormalFactor = bFinalNormalSpeed / totalSpeed;
 
@@ -146,7 +149,7 @@ namespace Physics
 	{
 		AccumulatedSimTime += DeltaTime;
 
-		while (AccumulatedSimTime > FixedTimestep)
+		while (AccumulatedSimTime >= FixedTimestep)
 		{
 			// TODO: Do physics
 			
@@ -198,20 +201,7 @@ namespace Physics
 				}
 			}
 
-			//for (auto col = Colliders.begin(); col != Colliders.end(); ++col)
-			//{
-			//	for (auto col2 = std::next(col); col2 != Colliders.end(); ++col2)
-			//	{
-			//		
-			//		auto data = Collision::Collide(*col, *col2);
-			//		if (data.AreColliding)
-			//		{
-			//			(*col)->OnCollide.Invoke(data);
-			//		}
-			//	}
-			//}
-
-			AccumulatedSimTime -= DeltaTime;
+			AccumulatedSimTime -= FixedTimestep;
 		}
 	}
 }
@@ -284,7 +274,7 @@ namespace Collision
 
 		glm::vec3 spherePos = first->GetSceneObject()->GetTransform()->GetWorldPosition() + first->Center;
 
-		glm::vec3 secondWorldPos = second->GetSceneObject()->GetTransform()->GetWorldPosition();
+		glm::vec3 secondWorldPos = second->GetSceneObject()->GetTransform()->GetWorldPosition() + second->Center;
 		glm::vec3 bMin = secondWorldPos - second->Extents;
 		glm::vec3 bMax = secondWorldPos + second->Extents;
 
@@ -320,10 +310,10 @@ namespace Collision
 		AABBCollider* first = (AABBCollider*)a;
 		AABBCollider* second = (AABBCollider*)b;
 
-		glm::vec3 firstWorldPos = first->GetSceneObject()->GetTransform()->GetWorldPosition();
+		glm::vec3 firstWorldPos = first->GetSceneObject()->GetTransform()->GetWorldPosition() + first->Center;
 
 
-		glm::vec3 secondWorldPos = second->GetSceneObject()->GetTransform()->GetWorldPosition();
+		glm::vec3 secondWorldPos = second->GetSceneObject()->GetTransform()->GetWorldPosition() + second->Center;
 
 
 		glm::vec3 delta = secondWorldPos - firstWorldPos;

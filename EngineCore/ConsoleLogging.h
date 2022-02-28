@@ -15,6 +15,23 @@
 /// </summary>
 namespace clog
 {
+	enum class LogFlags
+	{
+		Time = 1 << 0,
+		SourceInfo = 1 << 1
+	};
+
+	inline LogFlags operator|(LogFlags a, LogFlags b)
+	{
+		return static_cast<LogFlags>(static_cast<int>(a) | static_cast<int>(b));
+	}
+	inline int operator&(LogFlags a, LogFlags b)
+	{
+		return static_cast<int>(a) & static_cast<int>(b);
+	}
+
+	extern LogFlags LogSettings;
+
 	void Error(int line, std::string sourceFunc, std::string sourceFile, std::string message, bool throwException);
 	void Warning(int line, std::string sourceFunc, std::string sourceFile, std::string message);
 	void Info(int line, std::string sourceFunc, std::string sourceFile, std::string message);

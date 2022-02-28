@@ -168,6 +168,7 @@
     <ClInclude Include="ElementBuffer.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="EngineData.h" />
+    <ClInclude Include="EUtil.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="GLErrors.h" />
     <ClInclude Include="InputManager.h" />

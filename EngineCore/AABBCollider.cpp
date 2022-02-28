@@ -27,3 +27,9 @@ AABBCollider::AABBCollider(SceneObject* attachedTo, glm::vec3 extents) : Collide
 	Center = glm::vec3(0,0,0);
 	Initialise();
 }
+AABBCollider::AABBCollider(SceneObject* attachedTo, glm::vec3 center, glm::vec3 extents) : Collider(attachedTo)
+{
+	Extents = extents;
+	Center = center;
+	Initialise();
+}

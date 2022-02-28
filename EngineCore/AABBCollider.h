@@ -17,6 +17,7 @@ public:
 	AABBCollider(SceneObject* attachedTo);
 	AABBCollider(SceneObject* attachedTo, float apothem);
 	AABBCollider(SceneObject* attachedTo, glm::vec3 extents);
+	AABBCollider(SceneObject* attachedTo, glm::vec3 center, glm::vec3 extents);
 
 private:
 	Collision::ColliderType _colliderType = Collision::ColliderType::AABB;

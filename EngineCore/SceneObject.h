@@ -1,5 +1,6 @@
 #pragma once
 
+#include<string>
 #include<vector>
 #include<memory>
 
@@ -12,6 +13,8 @@ public:
 	Transform* GetTransform();
 	
 	std::vector<std::shared_ptr<Component>> Components;
+
+	std::string Name;
 
 	/// <summary>
 	/// Add a component of provided template type and pass 'params' to its constructor.
