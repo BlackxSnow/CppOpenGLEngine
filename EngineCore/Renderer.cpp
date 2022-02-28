@@ -36,7 +36,7 @@ void Renderer::Draw(Camera& camera)
 
 	for (std::shared_ptr<Mesh> mesh : Meshes)
 	{
-		mesh->Draw(modelMatrix, *GLShader, camera, 1);
+		mesh->Draw(modelMatrix, *GLShader, camera, 1, ColourSetting, Colour);
 		gler::ProcessGLErrors(CLOGINFO);
 	}
 }
@@ -52,7 +52,7 @@ void Renderer::Draw(Shader& shader, const glm::vec3 camPos, const glm::mat4 camM
 
 	for (std::shared_ptr<Mesh> mesh : Meshes)
 	{
-		mesh->Draw(modelMatrix, shader, camMatrix, 0);
+		mesh->Draw(modelMatrix, shader, camMatrix, 0, ColourSetting, Colour);
 	}
 }
 
@@ -67,7 +67,7 @@ void Renderer::Draw(const glm::vec3 camPos, const glm::mat4 camMatrix)
 
 	for (std::shared_ptr<Mesh> mesh : Meshes)
 	{
-		mesh->Draw(modelMatrix, *GLShader, camMatrix, 0);
+		mesh->Draw(modelMatrix, *GLShader, camMatrix, 0, ColourSetting, Colour);
 	}
 }
 

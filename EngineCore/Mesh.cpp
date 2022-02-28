@@ -2,6 +2,7 @@
 #include "SceneObject.h"
 #include "GLErrors.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "ShaderData.h"
 
 
 void Mesh::UpdateMesh()
@@ -32,7 +33,7 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vec
 
 Mesh::Mesh() {}
 
-void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera, GLuint minTextureSlot)
+void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera, GLuint minTextureSlot, const ShaderColour& sampleType, const glm::vec3& objectColour)
 {
 	shader.Activate();
 	VAO.Bind();
@@ -70,16 +71,18 @@ void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, Camera& camera, GLuint m
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "renderMatrix"), 1, GL_FALSE, glm::value_ptr(renderMatrix));
 	gler::ProcessGLErrors(CLOGINFO);
 
-	unsigned int useTextures = Textures.size() > 0 ? 1 : 0;
-
-	glUniform1ui(glGetUniformLocation(shader.ID, "useTextures"), useTextures);
+	glUniform1ui(glGetUniformLocation(shader.ID, "colSetting"), (int)sampleType);
+	if (sampleType == ShaderColour::Uniform)
+	{
+		glUniform3f(glGetUniformLocation(shader.ID, "ObjectColour"), objectColour.x, objectColour.y, objectColour.z);
+	}
 
 	gler::ProcessGLErrors(CLOGINFO);
 	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 	gler::ProcessGLErrors(CLOGINFO);
 }
 
-void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, const glm::mat4& camMatrix, GLuint minTextureSlot)
+void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, const glm::mat4& camMatrix, GLuint minTextureSlot, const ShaderColour& sampleType, const glm::vec3& objectColour)
 {
 	shader.Activate();
 	VAO.Bind();
@@ -110,9 +113,12 @@ void Mesh::Draw(glm::mat4& modelMatrix, Shader& shader, const glm::mat4& camMatr
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "renderMatrix"), 1, GL_FALSE, glm::value_ptr(renderMatrix));
 
-	unsigned int useTextures = Textures.size() > 0 ? 1 : 0;
+	glUniform1ui(glGetUniformLocation(shader.ID, "colSetting"), (int)sampleType);
 
-	glUniform1ui(glGetUniformLocation(shader.ID, "useTextures"), useTextures);
+	if (sampleType == ShaderColour::Uniform)
+	{
+		glUniform3f(glGetUniformLocation(shader.ID, "ObjectColour"), objectColour.x, objectColour.y, objectColour.z);
+	}
 
 	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 }

@@ -29,8 +29,14 @@ uniform sampler2DArray LightDepthMaps;
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
 
-// If 0, use vert colours instead.
-uniform uint useTextures;
+const uint USE_VERT_COL = 0;
+const uint USE_UNIFORM_COL = 1;
+const uint USE_TEX_COL = 2;
+
+// Colour setting. Value correlates to constants above
+uniform uint colSetting;
+
+uniform vec3 ObjectColour;
 
 uniform vec3 camPosition;
 
@@ -69,8 +75,20 @@ void main()
 {
    vec3 properNormal = normalize(fsi.Normal);
 
-   // Set colour depending on useTextures value.
-   vec4 sampleColour = texture(diffuse0, fsi.TexCoord) * useTextures + vec4(fsi.Colour, 1) * (1-useTextures);
+   vec4 sampleColour = vec4(0,0,0,1);
+
+   switch (colSetting)
+   {
+      case USE_VERT_COL:
+         sampleColour = vec4(fsi.Colour, 1);
+         break;
+      case USE_UNIFORM_COL:
+         sampleColour = vec4(ObjectColour, 1);
+         break;
+      case USE_TEX_COL:
+         sampleColour = texture(diffuse0, fsi.TexCoord);
+         break;
+   }
 
    vec3 reverseViewDirection = normalize(camPosition - fsi.FragPos);
 

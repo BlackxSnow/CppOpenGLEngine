@@ -4,6 +4,7 @@
 
 #include "Component.h"
 #include "Mesh.h"
+#include "ShaderData.h"
 
 class Renderer : public Component
 {
@@ -14,7 +15,16 @@ public:
 	// Replace with a vector of Material (class containing a pre-set shader)
 	std::shared_ptr<Shader> GLShader;
 
+	/// <summary>
+	/// Culling mode for rendering to shadow maps. GL_Front is preferred when viable (ie. when the mesh has backfaces).
+	/// </summary>
 	GLenum ShadowMapCullingMode = GL_FRONT;
+
+	/// <summary>
+	/// Determines what colour the shader will sample from.
+	/// </summary>
+	ShaderColour ColourSetting = ShaderColour::Texture;
+	glm::vec3 Colour = glm::vec3(0.7,0.7,0.7);
 
 	Event<Shader&, Camera&> OnRender;
 
