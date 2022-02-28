@@ -22,7 +22,16 @@ public:
 	/// <param name="stride">Size of each vertex within the buffer.</param>
 	/// <param name="offset">Byte offset of the layout data from the start of the vertex data.</param>
 	void LinkAttrib(VertexBuffer& buffer, GLuint layout, GLuint componentCount, GLenum type, GLsizeiptr stride, void* offset);
+	/// <summary>
+	/// Bind this as the active OpenGL VAO.
+	/// </summary>
 	void Bind();
+	/// <summary>
+	/// Unbind this as the active VAO.
+	/// </summary>
 	void Unbind();
+	/// <summary>
+	/// Free the underlying OpenGL object.
+	/// </summary>
 	void Delete();
 };

@@ -7,12 +7,19 @@
 #include "Component.h"
 #include "Transform.h"
 
+/// <summary>
+/// Skeleton class for objects existing within the world.
+/// </summary>
 class SceneObject
 {
 public:
 	Transform* GetTransform();
 	
+	/// <summary>
+	/// All components attached to this SceneObject.
+	/// </summary>
 	std::vector<std::shared_ptr<Component>> Components;
+
 
 	std::string Name;
 

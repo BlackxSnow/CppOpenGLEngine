@@ -6,6 +6,9 @@ class Collider;
 
 namespace Collision
 {
+	/// <summary>
+	/// Defines the limits of an axis aligned bounding box.
+	/// </summary>
 	struct Bounds
 	{
 		glm::vec3 Min;
@@ -15,6 +18,12 @@ namespace Collision
 
 		Bounds(glm::vec3 min, glm::vec3 max);
 		Bounds();
+		/// <summary>
+		/// Create a new bounds from a center and extents.
+		/// </summary>
+		/// <param name="center"></param>
+		/// <param name="extents"></param>
+		/// <returns></returns>
 		static Bounds FromExtents(glm::vec3 center, glm::vec3 extents);
 
 	};
@@ -27,11 +36,19 @@ namespace Collision
 		//OBB
 	};
 
+	/// <summary>
+	/// Data for collision between two colliders.
+	/// </summary>
 	struct CollisionData
 	{
 		bool AreColliding;
-
+		/// <summary>
+		/// Normal vector pointing away from impact surface.
+		/// </summary>
 		glm::vec3 Normal;
+		/// <summary>
+		/// Distance of penetration inside the collider.
+		/// </summary>
 		float Depth;
 
 		/// <summary>
@@ -47,13 +64,23 @@ namespace Collision
 		CollisionData();
 	};
 
+	// Collider2Collider collision check function set.
 	CollisionData Sphere2Sphere(Collider* a, Collider* b);
 	CollisionData Sphere2AABB(Collider* a, Collider* b);
 	CollisionData AABB2Sphere(Collider* a, Collider* b);
 	CollisionData AABB2AABB(Collider* a, Collider* b);
 
+	/// <summary>
+	/// Array linking ColliderType combinations to appropriate collision functions.
+	/// </summary>
 	extern CollisionData(*CollisionFunctions[])(Collider*, Collider*);
 
+	/// <summary>
+	/// Calls relevant collision functions given two colliders.
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <returns></returns>
 	CollisionData Collide(Collider* a, Collider* b);
 
 

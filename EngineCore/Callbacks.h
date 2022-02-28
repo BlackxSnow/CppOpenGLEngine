@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// Registers class for frame updates.
+/// Inherit from this to register class for pre-physics frame updates.
 /// </summary>
 class IUpdatable
 {
@@ -13,7 +13,7 @@ public:
 };
 
 /// <summary>
-/// Registers class for callbacks after physics calculations.
+/// Inherit from this to register class for callbacks after physics calculations.
 /// </summary>
 class ILateUpdatable
 {
@@ -24,6 +24,9 @@ public:
 	~ILateUpdatable();
 };
 
+/// <summary>
+/// Inheirt from this to register class for callbacks on physics update.
+/// </summary>
 class IFixedUpdatable
 {
 public:

@@ -9,12 +9,19 @@
 
 class Collider;
 
+/// <summary>
+/// Behaviour of the physics object in simulation.
+/// </summary>
 enum class PhysicsBehaviour
 {
 	Dynamic,
 	Static
 };
 
+/// <summary>
+/// Physics body for simulation.
+/// Add this component prior to adding colliders.
+/// </summary>
 class Rigidbody : public Component
 {
 	COMPONENT_DECLARATION(Rigidbody);
@@ -24,6 +31,9 @@ public:
 	glm::vec3 Velocity;
 	PhysicsBehaviour PhysicsType;
 
+	/// <summary>
+	/// Invoked on physical collision with another Rigidbody.
+	/// </summary>
 	Event<Collision::CollisionData> OnCollide;
 
 	/// <summary>
@@ -65,6 +75,9 @@ public:
 
 	~Rigidbody();
 
+	/// <summary>
+	/// Whether this rigidbody should be influenced by gravity.
+	/// </summary>
 	bool UseGravity = true;
 
 private:

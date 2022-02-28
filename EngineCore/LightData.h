@@ -12,6 +12,9 @@ const unsigned int LIGHT_SPOT = 2;
 /// </summary>
 struct LightData
 {
+	/// <summary>
+	/// Relates to LightData.h constants. Type of light for rendering purposes.
+	/// </summary>
 	unsigned int Type;
 	float Size;
 	float FeatherAmount;

@@ -17,6 +17,9 @@ class Light : public Component
 
 public:
 	glm::vec4 LightColour;
+	/// <summary>
+	/// Whether or not this light contributes to real time shadows.
+	/// </summary>
 	bool isShadowCaster = true;
 	
 	/// <summary>
@@ -25,6 +28,11 @@ public:
 	/// <returns></returns>
 	virtual LightData BuildLightData(int* shadowMapIndex, std::vector<glm::mat4>& lightMatrices) = 0;
 
+	/// <summary>
+	/// Construct view and projection matrices for the light's shadow rendering within the provided pointers.
+	/// </summary>
+	/// <param name="view"></param>
+	/// <param name="projection"></param>
 	virtual void BuildLightMatrices(OUT glm::mat4* view, OUT glm::mat4* projection) = 0;
 
 	/// <summary>

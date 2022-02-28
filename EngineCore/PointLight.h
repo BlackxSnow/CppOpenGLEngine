@@ -1,6 +1,9 @@
 #pragma once
 #include "Light.h"
 
+/// <summary>
+/// A single point of light providing radial light based on distance.
+/// </summary>
 class PointLight : public Light
 {
 	COMPONENT_DECLARATION(PointLight)

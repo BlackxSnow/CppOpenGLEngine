@@ -2,11 +2,17 @@
 
 #include "Collider.h"
 
+/// <summary>
+/// Spherical collider class defined by a center and radius.
+/// </summary>
 class SphereCollider : public Collider
 {
 	COMPONENT_DECLARATION(SphereCollider);
 
 public:
+	/// <summary>
+	/// Offset of the collider from the SceneObject origin.
+	/// </summary>
 	glm::vec3 Center;
 	float Radius;
 

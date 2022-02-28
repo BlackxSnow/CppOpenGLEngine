@@ -14,6 +14,9 @@
 #include "Event.h"
 #include "ShaderData.h"
 
+/// <summary>
+/// Storage class for mesh related data.
+/// </summary>
 class Mesh
 {
 
@@ -26,6 +29,9 @@ public:
 
 	VertexArray VAO;
 
+	/// <summary>
+	/// Binds and sets the mesh data on its openGL objects.
+	/// </summary>
 	void UpdateMesh();
 
 	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<std::shared_ptr<Texture>>& textures);

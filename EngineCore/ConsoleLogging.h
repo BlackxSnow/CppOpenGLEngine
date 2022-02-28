@@ -30,9 +30,34 @@ namespace clog
 		return static_cast<int>(a) & static_cast<int>(b);
 	}
 
+	/// <summary>
+	/// Flags determining which information is prefixed to the message.
+	/// </summary>
 	extern LogFlags LogSettings;
 
+	/// <summary>
+	/// Log an error into the console. Note: It's recommended to use the LogError macro.
+	/// </summary>
+	/// <param name="line"></param>
+	/// <param name="sourceFunc"></param>
+	/// <param name="sourceFile"></param>
+	/// <param name="message"></param>
+	/// <param name="throwException"></param>
 	void Error(int line, std::string sourceFunc, std::string sourceFile, std::string message, bool throwException);
+	/// <summary>
+	/// Log a warning into the console. Note: it's recommended to use the LogWarning macro.
+	/// </summary>
+	/// <param name="line"></param>
+	/// <param name="sourceFunc"></param>
+	/// <param name="sourceFile"></param>
+	/// <param name="message"></param>
 	void Warning(int line, std::string sourceFunc, std::string sourceFile, std::string message);
+	/// <summary>
+	/// Log info into the console. Note: it's recommended to use the LogInfo macro.
+	/// </summary>
+	/// <param name="line"></param>
+	/// <param name="sourceFunc"></param>
+	/// <param name="sourceFile"></param>
+	/// <param name="message"></param>
 	void Info(int line, std::string sourceFunc, std::string sourceFile, std::string message);
 }

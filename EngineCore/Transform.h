@@ -6,6 +6,9 @@
 
 #include "Component.h"
 
+/// <summary>
+/// Spatial data for SceneObjects.
+/// </summary>
 class Transform : public Component
 {
 	COMPONENT_DECLARATION(Transform)

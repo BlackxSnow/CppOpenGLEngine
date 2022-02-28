@@ -4,6 +4,9 @@
 #include<glm/glm.hpp>
 #include<vector>
 
+/// <summary>
+/// Single vertex of a mesh.
+/// </summary>
 struct Vertex
 {
 	glm::vec3 Position;
@@ -28,7 +31,16 @@ public:
 	/// <param name="size"></param>
 	VertexBuffer(std::vector<Vertex> vertices);
 
+	/// <summary>
+	/// Bind this as the active OpenGL VertexBuffer.
+	/// </summary>
 	void Bind();
+	/// <summary>
+	/// Unbind this as the active VBO.
+	/// </summary>
 	void Unbind();
+	/// <summary>
+	/// Free the underlying OpenGL object.
+	/// </summary>
 	void Delete();
 };
