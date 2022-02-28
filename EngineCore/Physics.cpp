@@ -35,6 +35,63 @@ namespace Physics
 		}
 	} _boundsCompare;
 
+	/// <summary>
+	/// Resolves a single elastic collision for cases of dynamic->static collision.
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="data"></param>
+	void ResolveSingleElastic(const RBBounds& target, const Collision::CollisionData& data)
+	{
+		Transform* t = target.rigidbody->GetSceneObject()->GetTransform();
+		t->SetPosition(t->GetPosition() - data.Normal * data.Depth);
+
+		glm::vec3 normalVelocity = glm::dot(target.rigidbody->Velocity, data.Normal) * data.Normal;
+		glm::vec3 tangentVelocity = target.rigidbody->Velocity - normalVelocity;
+
+		target.rigidbody->Velocity = tangentVelocity - normalVelocity;
+	}
+
+	void ResolveElastic(const RBBounds& a, const Collision::CollisionData& aData, const RBBounds& b, const Collision::CollisionData& bData)
+	{
+		Transform* aT = a.rigidbody->GetSceneObject()->GetTransform();
+		Transform* bT = b.rigidbody->GetSceneObject()->GetTransform();
+
+		float aNormalMagnitude = glm::dot(a.rigidbody->Velocity, aData.Normal);
+		float bNormalMagnitude = glm::dot(b.rigidbody->Velocity, bData.Normal);
+		float totalNormalVelocity = aNormalMagnitude + bNormalMagnitude;
+
+		glm::vec3 aNormalVelocity = aNormalMagnitude * aData.Normal;
+		glm::vec3 bNormalVelocity = bNormalMagnitude * bData.Normal;
+
+		float aNormalFactor = aNormalMagnitude / totalNormalVelocity;
+		float bNormalFactor = bNormalMagnitude / totalNormalVelocity;
+
+		aT->SetPosition(aT->GetPosition() - aData.Normal * aData.Depth * aNormalFactor);
+		bT->SetPosition(bT->GetPosition() - bData.Normal * bData.Depth * bNormalFactor);
+
+		glm::vec3 aTangentVelocity = a.rigidbody->Velocity - aNormalVelocity;
+		glm::vec3 bTangentVelocity = b.rigidbody->Velocity - bNormalVelocity;
+
+		a.rigidbody->Velocity = aTangentVelocity - aNormalVelocity;
+		b.rigidbody->Velocity = bTangentVelocity - bNormalVelocity;
+	}
+
+
+	void ResolveCollision(const RBBounds& a, const Collision::CollisionData& aData, const RBBounds& b, const Collision::CollisionData& bData)
+	{
+		if (a.rigidbody->PhysicsType == PhysicsBehaviour::Static)
+		{
+			ResolveSingleElastic(b, bData);
+			return;
+		}
+		if (b.rigidbody->PhysicsType == PhysicsBehaviour::Static)
+		{
+			ResolveSingleElastic(a, aData);
+			return;
+		}
+		ResolveElastic(a, aData, b, bData);
+
+	}
 
 	void CheckCollisions(RBBounds& a, RBBounds& b)
 	{
@@ -50,32 +107,15 @@ namespace Physics
 				if (data.AreColliding)
 				{
 					inverseData = data.FromInverse();
+
+					ResolveCollision(a, data, b, inverseData);
+
 					aCol->OnCollide.Invoke(data);
 					bCol->OnCollide.Invoke(inverseData);
 
 					a.rigidbody->OnCollide.Invoke(data);
 					b.rigidbody->OnCollide.Invoke(inverseData);
 					areColliding = true;
-
-					// TEST RESOLUTION
-					if (a.rigidbody->PhysicsType == PhysicsBehaviour::Static)
-					{
-						Transform* t = b.rigidbody->GetSceneObject()->GetTransform();
-						t->SetPosition(t->GetPosition() + data.Normal * data.Depth);
-						b.rigidbody->Velocity = glm::vec3(0, 0, 0);
-					}
-					else if (b.rigidbody->PhysicsType == PhysicsBehaviour::Static)
-					{
-						Transform* t = a.rigidbody->GetSceneObject()->GetTransform();
-						t->SetPosition(t->GetPosition() + inverseData.Normal * inverseData.Depth);
-						a.rigidbody->Velocity = glm::vec3(0, 0, 0);
-					}
-					else
-					{
-
-					}
-					//a.rigidbody->Velocity = -a.rigidbody->Velocity;
-					//b.rigidbody->Velocity = -b.rigidbody->Velocity;
 
 					break;
 				}
