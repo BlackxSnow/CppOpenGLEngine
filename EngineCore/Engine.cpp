@@ -104,14 +104,23 @@ void LoadIncludes()
 	const std::string userIncludePath = "./Resources/Shaders/Includes";
 	std::ifstream ldFile;
 
+
+
 	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
 		TryLoadInclude(entry, ldFile);
 	}
 
-	for (const auto& entry : std::filesystem::directory_iterator(userIncludePath))
+	if (std::filesystem::exists(userIncludePath))
 	{
-		TryLoadInclude(entry, ldFile);
+		for (const auto& entry : std::filesystem::directory_iterator(userIncludePath))
+		{
+			TryLoadInclude(entry, ldFile);
+		}
+	}
+	else
+	{
+		std::filesystem::create_directory(userIncludePath);
 	}
 }
 
