@@ -162,7 +162,6 @@ namespace Physics
 
 		while (AccumulatedSimTime >= FixedTimestep)
 		{
-			// TODO: Do physics
 			
 			std::vector<RBBounds> bounds;
 
