@@ -87,15 +87,17 @@ void Renderer::Draw(Shader& shader, bool minimal)
 	}
 }
 
-void Renderer::ImportMeshesFromOBJ(std::string filePath)
+void Renderer::ImportMeshesFromOBJ(const std::string& filePath)
 {
 	objl::Loader objLoader;
 
-	bool isLoaded = objLoader.LoadFile(filePath);
+	std::string adjustedPath = "Resources/Models/" + filePath;
+
+	bool isLoaded = objLoader.LoadFile(adjustedPath);
 
 	if (!isLoaded)
 	{
-		clog::Error(CLOGINFO, "Unable to load file at " + filePath, true);
+		clog::Error(CLOGINFO, "Unable to load file at " + adjustedPath, true);
 	}
 
 	objl::Mesh* currentMesh;

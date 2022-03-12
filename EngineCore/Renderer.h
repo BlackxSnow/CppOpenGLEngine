@@ -70,7 +70,7 @@ public:
 	/// Fill meshes with data from an external OBJ file.
 	/// </summary>
 	/// <param name="filePath"></param>
-	void ImportMeshesFromOBJ(std::string filePath);
+	void ImportMeshesFromOBJ(const std::string& filePath);
 
 	Renderer(SceneObject* attachedObject, std::shared_ptr<Shader> shader, std::vector<std::shared_ptr<Mesh>> meshes);
 	Renderer(SceneObject* attachedObject, std::shared_ptr<Shader> shader);

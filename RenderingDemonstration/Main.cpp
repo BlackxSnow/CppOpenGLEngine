@@ -33,7 +33,7 @@ SceneObject* CreateCube(glm::vec3 pos, float mass = 1, glm::vec3 colour = glm::v
 	rb->Velocity = velocity;
 	rb->UseGravity = useGravity;
 	cube->AddComponent<AABBCollider>(1.0f);
-	cubeRenderer->ImportMeshesFromOBJ("Models/Cube.obj");
+	cubeRenderer->ImportMeshesFromOBJ("Cube.obj");
 	return cube;
 }
 
@@ -50,7 +50,7 @@ int main()
 {
 	InitialiseEngine();
 
-	txt::LoadFont(std::filesystem::absolute(std::filesystem::path(".\\Fonts\\Metropolis-Regular.otf")).string());
+	txt::LoadFont(std::filesystem::absolute(std::filesystem::path(".\\Resources\\Fonts\\Metropolis-Regular.otf")).string());
 
 	OnGUIDraw.Register("DrawText", []() { txt::RenderText("Text Test", "Metropolis-Regular", 25, 25, 1, glm::vec3(1, 1, 1)); });
 
@@ -67,7 +67,7 @@ int main()
 	planeRenderer->Colour = glm::vec3(0.7f, 0.7f, 0.7f);
 	plane->AddComponent<Rigidbody>(1, PhysicsBehaviour::Static);
 	plane->AddComponent<AABBCollider>(glm::vec3(0,-1,0), glm::vec3(10,1.0f, 10));
-	planeRenderer->ImportMeshesFromOBJ("Models/Plane.obj");
+	planeRenderer->ImportMeshesFromOBJ("Plane.obj");
 
 	CreateWall(glm::vec3(-10, 10, 0), glm::vec3(0.5f, 10, 10));
 	CreateWall(glm::vec3(10, 10, 0), glm::vec3(0.5f, 10, 10));

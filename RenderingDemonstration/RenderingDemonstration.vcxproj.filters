@@ -1,30 +1,48 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="..">
+      <UniqueIdentifier>{61705900-4DFC-870B-B6AA-880BA255880B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="..\Libraries">
+      <UniqueIdentifier>{0D91BBDD-F9F3-4A82-A279-83388EBB1605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="..\Libraries\include">
+      <UniqueIdentifier>{80759BC9-6C04-2593-1523-398E01913539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\GL">
+      <UniqueIdentifier>{E2562A68-4E8E-72FF-5798-D622C34E99F8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\GLFW">
+      <UniqueIdentifier>{BFA01B1C-2B63-4FA6-7413-DE32E0142884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\freetype">
+      <UniqueIdentifier>{33A41861-9FBC-FF8A-6869-8F24D4409424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\freetype\config">
+      <UniqueIdentifier>{F81B8C84-E402-4E7C-8D53-B4997919C7E2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\glm">
+      <UniqueIdentifier>{CFBF756D-BBE4-C4ED-E42F-AA7DD0B3C30B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\glm\detail">
+      <UniqueIdentifier>{B1F87D51-1DDC-8C91-26DF-BACD924153E2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\glm\simd">
+      <UniqueIdentifier>{8B55548E-F76D-3BB8-C01A-CB512CF2CF51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\obj">
+      <UniqueIdentifier>{8AE0756D-7605-C5ED-9F50-AA7D8BD4C30B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Libraries\include\stb">
+      <UniqueIdentifier>{D8F3756D-C418-C5ED-ED63-AA7DD9E7C30B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="CameraController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
 </Project>

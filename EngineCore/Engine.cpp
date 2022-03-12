@@ -67,40 +67,51 @@ int InitWindow(OUT GLFWwindow** window)
 	return 0;
 }
 
+void TryLoadInclude(const std::filesystem::directory_entry& entry, std::ifstream& ldFile)
+{
+	if (entry.path().extension() != ".glsl")
+	{
+		clog::Warning(CLOGINFO, "Attempted to load non GLSL file as include.");
+		return;
+	}
+	ldFile = std::ifstream(entry.path().string().erase(0, 2), std::ios::ate | std::ios::in | std::ios::binary);
+
+	if (!ldFile.is_open())
+	{
+		clog::Warning(CLOGINFO, "Include " + entry.path().filename().string() + " was unable to be loaded.");
+		return;
+	}
+
+	std::string name = entry.path().filename().string();
+	name.insert(0, "/");
+
+	ldFile.seekg(0, std::ios::end);
+	std::streampos size = ldFile.tellg();
+	std::streampos dataLength = size;
+	dataLength += 1;
+
+	char* data = new char[dataLength];
+	data[size] = '\0';
+	ldFile.seekg(0, std::ios::beg);
+	ldFile.read(data, size);
+	glNamedStringARB(GL_SHADER_INCLUDE_ARB, name.length(), name.c_str(), dataLength, data);
+	delete[] data;
+}
+
 void LoadIncludes()
 {
-	const std::string path = "./Shaders/Includes/";
+	const std::string path = "./Resources/Shaders/builtin/Includes/";
+	const std::string userIncludePath = "./Resources/Shaders/Includes";
 	std::ifstream ldFile;
 
 	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
-		if (entry.path().extension() != ".glsl")
-		{
-			clog::Warning(CLOGINFO, "Attempted to load non GLSL file as include.");
-			continue;
-		}
-		ldFile = std::ifstream(entry.path().string().erase(0, 2), std::ios::ate | std::ios::in | std::ios::binary);
+		TryLoadInclude(entry, ldFile);
+	}
 
-		if (!ldFile.is_open())
-		{
-			clog::Warning(CLOGINFO, "Include " + entry.path().filename().string() + " was unable to be loaded.");
-			continue;
-		}
-
-		std::string name = entry.path().filename().string();
-		name.insert(0, "/");
-
-		ldFile.seekg(0, std::ios::end);
-		std::streampos size = ldFile.tellg();
-		std::streampos dataLength = size;
-		dataLength += 1;
-
-		char* data = new char[dataLength];
-		data[size] = '\0';
-		ldFile.seekg(0, std::ios::beg);
-		ldFile.read(data, size);
-		glNamedStringARB(GL_SHADER_INCLUDE_ARB, name.length(), name.c_str(), dataLength, data);
-		delete[] data;
+	for (const auto& entry : std::filesystem::directory_iterator(userIncludePath))
+	{
+		TryLoadInclude(entry, ldFile);
 	}
 }
 
@@ -293,7 +304,7 @@ void RenderTextureToScreen(GLuint texID, GLenum texType)
 
 void LoadBaseShaders()
 {
-	const std::string shaderPath = "Shaders/";
+	const std::string shaderPath = "Resources/Shaders/builtin/";
 	std::shared_ptr<Shader> shader = std::shared_ptr<Shader>(new Shader(shaderPath + "default.vert", shaderPath + "default.frag"));
 	std::shared_ptr<Shader> shadowMapShader = std::shared_ptr<Shader>(new Shader(shaderPath + "ShadowMap.vert", shaderPath + "ShadowMap.frag"));
 	std::shared_ptr<Shader> screenRender = std::shared_ptr<Shader>(new Shader(shaderPath + "ScreenRender.vert", shaderPath + "ScreenRender.frag"));

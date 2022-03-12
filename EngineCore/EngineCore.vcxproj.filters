@@ -1,277 +1,114 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="..">
+      <UniqueIdentifier>{61705900-4DFC-870B-B6AA-880BA255880B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="..\Libraries">
+      <UniqueIdentifier>{0D91BBDD-F9F3-4A82-A279-83388EBB1605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="..\Libraries\include">
+      <UniqueIdentifier>{80759BC9-6C04-2593-1523-398E01913539}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\OpenGL Rendering">
-      <UniqueIdentifier>{aebfec03-a7a5-4e79-a58b-e4f7cfa4bc51}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\GL">
+      <UniqueIdentifier>{E2562A68-4E8E-72FF-5798-D622C34E99F8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\OpenGL Rendering">
-      <UniqueIdentifier>{14b637c8-22bd-4ffe-8e1f-77bf619101a7}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\GLFW">
+      <UniqueIdentifier>{BFA01B1C-2B63-4FA6-7413-DE32E0142884}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders">
-      <UniqueIdentifier>{e8ea52cc-b6c0-4e0f-ada2-ec7f7a213302}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\freetype">
+      <UniqueIdentifier>{33A41861-9FBC-FF8A-6869-8F24D4409424}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Textures">
-      <UniqueIdentifier>{f95c7fd9-f55d-4a95-b894-28b05a3d1f6d}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\freetype\config">
+      <UniqueIdentifier>{F81B8C84-E402-4E7C-8D53-B4997919C7E2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Includes">
-      <UniqueIdentifier>{57ea61a5-9f42-4a9c-868a-fbf5e7c7ce82}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\glm">
+      <UniqueIdentifier>{CFBF756D-BBE4-C4ED-E42F-AA7DD0B3C30B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{856cc1c2-64af-4457-bec0-4cfedfdebae8}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\glm\detail">
+      <UniqueIdentifier>{B1F87D51-1DDC-8C91-26DF-BACD924153E2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{ed942129-c6e8-402c-95b0-79713b08a4e5}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\glm\simd">
+      <UniqueIdentifier>{8B55548E-F76D-3BB8-C01A-CB512CF2CF51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Physics">
-      <UniqueIdentifier>{d69d8adc-c8b4-4a14-9eb3-be50ff45b3f4}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\obj">
+      <UniqueIdentifier>{8AE0756D-7605-C5ED-9F50-AA7D8BD4C30B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Physics">
-      <UniqueIdentifier>{86a952c6-d68d-4575-9e9e-bfd861bb0fed}</UniqueIdentifier>
+    <Filter Include="..\Libraries\include\stb">
+      <UniqueIdentifier>{D8F3756D-C418-C5ED-ED63-AA7DD9E7C30B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElementBuffer.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexArray.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="LightData.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleLogging.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Conversion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GLErrors.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Callbacks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="ETime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rigidbody.h">
-      <Filter>Header Files\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Header Files\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereCollider.h">
-      <Filter>Header Files\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="TextRendering.h">
-      <Filter>Header Files\OpenGL Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="EMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AABBCollider.h">
-      <Filter>Header Files\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="AABBCollider.h" />
+    <ClInclude Include="Callbacks.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ConsoleLogging.h" />
+    <ClInclude Include="Conversion.h" />
+    <ClInclude Include="Defs.h" />
+    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="EMath.h" />
+    <ClInclude Include="ETime.h" />
+    <ClInclude Include="EUtil.h" />
+    <ClInclude Include="ElementBuffer.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="EngineData.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="GLErrors.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightData.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Renderer3D.h" />
+    <ClInclude Include="Rigidbody.h" />
+    <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderData.h" />
+    <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="TextRendering.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="VertexArray.h" />
+    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SceneObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ElementBuffer.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexArray.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="stb.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleLogging.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Conversion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SpotLight.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GLErrors.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Callbacks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="ETime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rigidbody.cpp">
-      <Filter>Source Files\Components\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Source Files\Components\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereCollider.cpp">
-      <Filter>Source Files\Components\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="TextRendering.cpp">
-      <Filter>Source Files\OpenGL Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="EMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AABBCollider.cpp">
-      <Filter>Source Files\Components\Physics</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
-    <None Include="default.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="default.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="ShadowMap.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="ShadowMap.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="ScreenRender.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="ScreenRender.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="brick.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="LightData.glsl">
-      <Filter>Resource Files\Shaders\Includes</Filter>
-    </Text>
+    <ClCompile Include="AABBCollider.cpp" />
+    <ClCompile Include="Callbacks.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConsoleLogging.cpp" />
+    <ClCompile Include="Conversion.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="EMath.cpp" />
+    <ClCompile Include="ETime.cpp" />
+    <ClCompile Include="ElementBuffer.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EngineData.cpp" />
+    <ClCompile Include="GLErrors.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Renderer3D.cpp" />
+    <ClCompile Include="Rigidbody.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="TextRendering.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="VertexArray.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="stb.cpp" />
   </ItemGroup>
 </Project>
