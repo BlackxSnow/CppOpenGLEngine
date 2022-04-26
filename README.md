@@ -1,7 +1,6 @@
 # CppOpenGLEngine
 
-This is a purely educational project focused on low level game engine creation using OpenGL.
-
+This is a purely educational project focused on low level game engine creation using OpenGL. Note that this is not intended to be used for anything, and is by all means a very poorly functioning project. Refer to ECSSpaceSim for a more robust engine design (and better architecture).
 
 Requires a C++ ISO 17 capable compiler.
 
