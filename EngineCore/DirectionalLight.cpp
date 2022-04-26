@@ -36,7 +36,9 @@ LightData DirectionalLight::BuildLightData(int* shadowMapIndex, std::vector<glm:
 
 void DirectionalLight::BuildLightMatrices(OUT glm::mat4* view, OUT glm::mat4* projection)
 {
-    const float size = 5;
+    // Shadow range...
+    // TODO move this elsewhere, make it modifiable.
+    const float size = 30;
 
     glm::vec3 camPos = ActiveCamera->GetSceneObject()->GetTransform()->GetWorldPosition();
     glm::vec3 falseLightPos = camPos + -Direction * 50.0f;

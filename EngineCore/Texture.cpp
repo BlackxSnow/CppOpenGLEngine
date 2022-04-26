@@ -31,6 +31,11 @@ Texture::Texture(const char* textureName, const char* textureType, GLenum format
 	stbi_set_flip_vertically_on_load(true);
 	Data = stbi_load(textureName, &Width, &Height, &ChannelCount, 0);
 	
+	if (Data == nullptr)
+	{
+		LogError(std::string("Could not load texture: ") + std::string(textureName), true);
+	}
+
 	glGenTextures(1, &ID);
 	glBindTexture(glTexType, ID);
 

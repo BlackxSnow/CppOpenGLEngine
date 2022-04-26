@@ -125,7 +125,7 @@ void main()
             break;
       }
       
-      vec3 reflectionDirection = reflect(-inverseLightRayDirection, properNormal);
+      vec3 reflectionDirection = reflect(inverseLightRayDirection, properNormal);
       float specularValue = pow(max(dot(reverseViewDirection, reflectionDirection), 0.0f), 8) * specularAmount * intensity;
       FragColor += specularValue;
       FragColor.w = sampleColour.w;
