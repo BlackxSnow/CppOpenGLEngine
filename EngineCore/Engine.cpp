@@ -397,7 +397,7 @@ int InitialiseEngine()
 	GLenum status = glewInit();
 	if (status != GLEW_OK)
 	{
-		std::cout << "Failed to initialise GLEW" << std::endl;
+		std::cout << "Failed to initialise GLEW. Code: " << status << std::endl;
 		glfwDestroyWindow(Window);
 		glfwTerminate();
 		return -1;
